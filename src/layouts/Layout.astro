@@ -1,4 +1,5 @@
 ---
+import { lien } from '../data/liens';
 import '../styles/global.css';
 import { getImage } from 'astro:assets';
 import { departements, site } from '../data/site';
@@ -29,6 +30,10 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Aperçu en ligne du prototype (npm run apercu) : aucune page ne doit être référencée par les
+// moteurs de recherche, pour ne pas concurrencer le vrai site.
+const apercu = import.meta.env.PUBLIC_SITE_PREVIEW === 'true';
 const shareImage = await getImage({ src: photo('platre-projete-4'), width: 1200, format: 'jpg' });
 
 // Données structurées : entreprise locale du bâtiment (référencement local).
@@ -62,9 +67,9 @@ const organizationSchema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="icon" href={lien('/favicon.ico')} />
+    <link rel="sitemap" href={lien('/sitemap-index.xml')} />
+    {apercu ? <meta name="robots" content="noindex, nofollow" /> : noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />

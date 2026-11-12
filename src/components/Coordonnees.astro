@@ -1,8 +1,9 @@
 ---
 /**
  * Bloc « Nos coordonnées », présent en bas de chaque page comme sur le site d'origine.
- * Avec `map`, la carte Google Maps est proposée à côté (page d'accueil, infos légales).
+ * Avec `map`, la carte Google Maps est proposée à côté (page d'accueil, contact, infos légales).
  */
+import { lien } from '../data/liens';
 import { site } from '../data/site';
 import Icon from './Icon.astro';
 import MapFacade from './MapFacade.astro';
@@ -58,7 +59,7 @@ const labelClass = 'block text-sm font-semibold tracking-wide text-stone-600 upp
       {
         map && (
           <div class="mt-9 flex flex-wrap gap-3">
-            <a href="/contact/#formulaire" data-open-contact class="btn btn-primary">
+            <a href={lien('/contact/#formulaire')} data-open-contact class="btn btn-primary">
               <Icon name="message" /> Nous contacter
             </a>
             <a href={site.mapLinkUrl} target="_blank" rel="noopener" class="btn btn-outline">

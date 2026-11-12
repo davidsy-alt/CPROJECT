@@ -4,6 +4,7 @@
  * Reprend l'encart présent sur chaque page prestation du site d'origine.
  */
 import { Image } from 'astro:assets';
+import { lien } from '../data/liens';
 import { qcmQuestions } from '../data/qcm';
 import { partenaires, type PartenaireId } from '../data/photos';
 import Icon from './Icon.astro';
@@ -68,7 +69,7 @@ const { items, certifications = [], presetTravaux } = Astro.props;
           Répondez à un court questionnaire, laissez vos coordonnées : nous vous rappelons sur le créneau de votre choix.
         </p>
         <a
-          href="/contact/#formulaire"
+          href={lien('/contact/#formulaire')}
           data-open-contact
           data-preset-question={presetTravaux !== undefined ? 'travaux' : undefined}
           data-preset-option={presetTravaux}

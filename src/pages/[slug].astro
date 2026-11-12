@@ -1,4 +1,5 @@
 ---
+import { lien } from '../data/liens';
 /** Modèle commun aux six pages prestations (contenu dans src/data/services.ts). */
 import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
@@ -43,9 +44,9 @@ const photos = await Promise.all(
       <div class="container-page py-12 sm:py-16 lg:py-20">
         <nav aria-label="Fil d’Ariane" class="text-sm text-stone-400">
           <ol class="flex flex-wrap items-center gap-2">
-            <li><a href="/" class="transition hover:text-white">Accueil</a></li>
+            <li><a href={lien('/')} class="transition hover:text-white">Accueil</a></li>
             <li aria-hidden="true">/</li>
-            <li><a href="/#prestations" class="transition hover:text-white">Prestations</a></li>
+            <li><a href={lien('/#prestations')} class="transition hover:text-white">Prestations</a></li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" class="text-stone-200">{service.label}</li>
           </ol>
@@ -66,7 +67,7 @@ const photos = await Promise.all(
           </div>
           <div class="mt-9 flex flex-wrap items-center gap-4">
             <a
-              href="/contact/#formulaire"
+              href={lien('/contact/#formulaire')}
               data-open-contact
               data-preset-question={service.qcmTravaux !== undefined ? 'travaux' : undefined}
               data-preset-option={service.qcmTravaux}
@@ -74,7 +75,7 @@ const photos = await Promise.all(
             >
               Demander un devis gratuit <Icon name="arrow-right" />
             </a>
-            <a href="/realisation-lorraine/" class="btn btn-ghost-light btn-lg">Nos réalisations</a>
+            <a href={lien('/realisation-lorraine/')} class="btn btn-ghost-light btn-lg">Nos réalisations</a>
           </div>
         </div>
       </div>
@@ -253,7 +254,7 @@ const photos = await Promise.all(
                     <h3 class="mt-5 text-3xl font-bold tracking-wide uppercase">Documentation</h3>
                     <p class="mt-2 text-stone-300">La fiche de présentation de la solution, au format PDF.</p>
                   </div>
-                  <a href={service.document.href} target="_blank" rel="noopener" class="btn btn-light">
+                  <a href={lien(service.document.href)} target="_blank" rel="noopener" class="btn btn-light">
                     <Icon name="download" /> {service.document.label}
                   </a>
                 </div>

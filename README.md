@@ -17,6 +17,7 @@ Prérequis : Node.js 22 ou plus (testé avec Node 24).
 | `npm run build`   | Génère le site statique dans `./dist/`                |
 | `npm run preview` | Affiche en local le site généré                       |
 | `npm run check`   | Vérifie le typage des fichiers `.astro` et `.ts`      |
+| `npm run apercu`  | Publie l’aperçu en ligne sur GitHub Pages (voir plus bas) |
 
 ## Où modifier quoi
 
@@ -72,6 +73,25 @@ L’envoi n’est pas encore branché sur un service. Deux modes :
 ```
 
 Un champ invisible sert de piège à robots (à la place du reCAPTCHA du site d’origine).
+
+## Liens internes : toujours `lien()`
+
+Le site peut être servi à la racine d’un domaine (`https://www.flocage-lorraine.com/`) ou dans un sous-dossier (aperçu GitHub Pages : `https://davidsy-alt.github.io/CPROJECT/`). Pour que les liens fonctionnent dans les deux cas, un lien vers une page ou un fichier du site ne s’écrit jamais en dur :
+
+```astro
+<a href={lien('/contact/')}>Contact</a>      <!-- oui -->
+<a href="/contact/">Contact</a>              <!-- non : cassé dans un sous-dossier -->
+```
+
+`lien()` est défini dans `src/data/liens.ts` et ajoute le sous-dossier quand il y en a un (option `base` d’Astro, réglée dans `astro.config.mjs` par la variable `BASE_PATH`). Les images et fichiers générés par Astro sont préfixés automatiquement.
+
+## Aperçu en ligne (GitHub Pages)
+
+`npm run apercu` construit le site pour l’adresse `https://davidsy-alt.github.io/CPROJECT/` et l’envoie sur la branche `gh-pages` du dépôt, que GitHub Pages publie (réglage du dépôt : Settings → Pages → « Deploy from a branch », branche `gh-pages`, dossier `/`).
+
+- L’aperçu ne se met pas à jour tout seul : relancer `npm run apercu` après un changement (compter une à deux minutes avant de le voir en ligne).
+- Toutes les pages de l’aperçu portent la consigne `noindex`, pour que les moteurs de recherche ne le référencent pas à la place du vrai site.
+- `npm run apercu -- --sans-envoi` construit seulement, dans `dist-apercu/`, sans rien envoyer.
 
 ## Mise en ligne
 

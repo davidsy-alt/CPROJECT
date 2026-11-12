@@ -1,5 +1,7 @@
 ---
 /** En-tête sombre des pages intérieures : fil d'Ariane, libellé, titre et contenu libre (slot). */
+import { lien } from '../data/liens';
+
 interface Props {
   /** Libellé court de la page (fil d'Ariane et petit libellé au-dessus du titre). */
   label: string;
@@ -20,7 +22,7 @@ const { label, title } = Astro.props;
   <div class="container-page py-12 sm:py-16 lg:py-20">
     <nav aria-label="Fil d’Ariane" class="text-sm text-stone-400">
       <ol class="flex flex-wrap items-center gap-2">
-        <li><a href="/" class="transition hover:text-white">Accueil</a></li>
+        <li><a href={lien('/')} class="transition hover:text-white">Accueil</a></li>
         <li aria-hidden="true">/</li>
         <li aria-current="page" class="text-stone-200">{label}</li>
       </ol>

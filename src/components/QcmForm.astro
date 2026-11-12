@@ -1,4 +1,5 @@
 ---
+import { lien } from '../data/liens';
 /**
  * Formulaire de contact sous forme de QCM : une question par écran (réponses A, B, C…),
  * puis les coordonnées. Les questions se modifient dans src/data/qcm.ts.
@@ -162,7 +163,7 @@ const stepCount = qcmQuestions.length + 1;
           <span>
             En cochant cette case, j’accepte que les données saisies dans le formulaire ci-dessus soient utilisées pour me
             recontacter dans le cadre de ma demande, conformément à
-            <a href="/infos-legales/" class="font-semibold text-brand-700 underline underline-offset-2 hover:text-brand-800"
+            <a href={lien('/infos-legales/')} class="font-semibold text-brand-700 underline underline-offset-2 hover:text-brand-800"
               >notre politique de confidentialité</a
             >.
           </span>

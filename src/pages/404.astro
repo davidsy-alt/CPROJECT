@@ -1,4 +1,5 @@
 ---
+import { lien } from '../data/liens';
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import PageHeader from '../components/PageHeader.astro';
@@ -10,8 +11,8 @@ import PageHeader from '../components/PageHeader.astro';
       L’adresse a peut-être changé. Retrouvez nos prestations depuis la page d’accueil.
     </p>
     <div class="mt-8 flex flex-wrap gap-4">
-      <a href="/" class="btn btn-primary">Retour à l’accueil <Icon name="arrow-right" /></a>
-      <a href="/contact/#formulaire" data-open-contact class="btn btn-ghost-light">Nous contacter</a>
+      <a href={lien('/')} class="btn btn-primary">Retour à l’accueil <Icon name="arrow-right" /></a>
+      <a href={lien('/contact/#formulaire')} data-open-contact class="btn btn-ghost-light">Nous contacter</a>
     </div>
   </PageHeader>
 </Layout>

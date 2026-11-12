@@ -1,4 +1,5 @@
 ---
+import { lien } from '../data/liens';
 import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
 import { site } from '../data/site';
@@ -26,7 +27,7 @@ const inServices = services.some((service) => serviceHref(service) === path);
 
 <header class="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
   <div class="container-page flex h-[4.5rem] items-center justify-between gap-4 lg:h-20">
-    <a href="/" class="shrink-0" aria-label={`${site.name} – retour à l’accueil`}>
+    <a href={lien('/')} class="shrink-0" aria-label={`${site.name} – retour à l’accueil`}>
       <Image
         src={logo}
         alt={site.name}
@@ -40,7 +41,7 @@ const inServices = services.some((service) => serviceHref(service) === path);
     <!-- Menu (écrans larges) -->
     <nav aria-label="Menu principal" class="hidden lg:block">
       <ul class="flex items-center gap-1">
-        <li><a href="/" class="nav-link" aria-current={current('/')}>Accueil</a></li>
+        <li><a href={lien('/')} class="nav-link" aria-current={current(lien('/'))}>Accueil</a></li>
         <li class="relative" data-dropdown>
           <button
             type="button"
@@ -78,7 +79,7 @@ const inServices = services.some((service) => serviceHref(service) === path);
           </div>
         </li>
         <li>
-          <a href="/realisation-lorraine/" class="nav-link" aria-current={current('/realisation-lorraine/')}>
+          <a href={lien('/realisation-lorraine/')} class="nav-link" aria-current={current(lien('/realisation-lorraine/'))}>
             Nos réalisations
           </a>
         </li>
@@ -88,7 +89,7 @@ const inServices = services.some((service) => serviceHref(service) === path);
     <!-- Le téléphone n'apparaît volontairement qu'en bas de page : le bouton Contact est l'accès principal. -->
     <div class="flex items-center gap-2 sm:gap-3">
       <a
-        href="/contact/#formulaire"
+        href={lien('/contact/#formulaire')}
         data-open-contact
         class="btn btn-primary btn-sm btn-attention lg:px-7 lg:py-3.5 lg:text-xl"
       >
@@ -117,7 +118,7 @@ const inServices = services.some((service) => serviceHref(service) === path);
   >
     <div class="container-page py-5">
       <ul class="space-y-1">
-        <li><a href="/" class="nav-link w-full" aria-current={current('/')}>Accueil</a></li>
+        <li><a href={lien('/')} class="nav-link w-full" aria-current={current(lien('/'))}>Accueil</a></li>
         <li>
           <p class="px-3.5 pt-4 pb-1 font-display text-sm font-semibold tracking-[0.2em] text-stone-400 uppercase">
             Prestations
@@ -136,11 +137,11 @@ const inServices = services.some((service) => serviceHref(service) === path);
           </ul>
         </li>
         <li class="pt-3">
-          <a href="/realisation-lorraine/" class="nav-link w-full" aria-current={current('/realisation-lorraine/')}>
+          <a href={lien('/realisation-lorraine/')} class="nav-link w-full" aria-current={current(lien('/realisation-lorraine/'))}>
             Nos réalisations
           </a>
         </li>
-        <li><a href="/contact/" class="nav-link w-full" aria-current={current('/contact/')}>Contact</a></li>
+        <li><a href={lien('/contact/')} class="nav-link w-full" aria-current={current(lien('/contact/'))}>Contact</a></li>
       </ul>
     </div>
   </nav>

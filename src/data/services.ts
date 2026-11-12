@@ -1,4 +1,5 @@
 import type { ImageMetadata } from 'astro';
+import { lien } from './liens';
 import { photo, type PartenaireId } from './photos';
 
 /**
@@ -477,4 +478,4 @@ export const services: Service[] = [
   },
 ];
 
-export const serviceHref = (service: Pick<Service, 'slug'>) => `/${service.slug}/`;
+export const serviceHref = (service: Pick<Service, 'slug'>) => lien(`/${service.slug}/`);
