@@ -20,3 +20,9 @@ Thumbs.db
 
 # Netlify CLI
 .netlify/
+
+# Workflows n8n : gardés en local seulement (le dépôt est public, ils contiennent l'adresse des webhooks)
+n8n/
+
+# Site construit pour l'aperçu GitHub Pages (npm run apercu)
+dist-apercu/
