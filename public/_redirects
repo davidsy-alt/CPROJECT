@@ -1,0 +1,12 @@
+# Redirections des anciennes adresses en .php vers les nouvelles pages
+# (format Netlify / Cloudflare Pages ; à transposer en .htaccess chez un hébergeur Apache).
+/index.php                          /                               301
+/flocage-lorraine.php               /flocage-lorraine/              301
+/aeroblue-lorraine.php              /aeroblue-lorraine/             301
+/platre-projete-lorraine.php        /platre-projete-lorraine/       301
+/protection-feu-lorraine.php        /protection-feu-lorraine/       301
+/isolation-platrerie-lorraine.php   /isolation-platrerie-lorraine/  301
+/isolation-projetee-lorraine.php    /isolation-projetee-lorraine/   301
+/realisation-lorraine.php           /realisation-lorraine/          301
+/contact.php                        /contact/                       301
+/infos-legales.php                  /infos-legales/                 301

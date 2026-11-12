@@ -1,0 +1,50 @@
+---
+/**
+ * Carte Google Maps chargée à la demande : tant que le visiteur n'a pas cliqué, aucune donnée
+ * n'est échangée avec Google (pas de cookie, page plus rapide). Sans JavaScript, le lien ouvre Google Maps.
+ * Le remplacement du lien par la carte est fait par src/scripts/embeds.ts.
+ */
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = 'aspect-[4/3] sm:aspect-[16/10]' } = Astro.props;
+const address = `${site.address.street}, ${site.address.postalCode} ${site.address.city}`;
+---
+
+<div class:list={['relative overflow-hidden rounded-3xl bg-stone-200 shadow-card ring-1 ring-stone-200', className]}>
+  <a
+    href={site.mapLinkUrl}
+    target="_blank"
+    rel="noopener"
+    data-embed={site.mapEmbedUrl}
+    data-embed-title={`Carte : ${site.name}, ${address}`}
+    class="map-facade group absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center"
+  >
+    <span class="flex size-16 items-center justify-center rounded-full bg-brand-600 text-white shadow-lift transition duration-300 group-hover:scale-110">
+      <Icon name="map-pin" class="size-7" />
+    </span>
+    <span class="rounded-2xl bg-white/95 px-6 py-4 shadow-card">
+      <span class="block font-display text-2xl font-bold tracking-wide text-stone-950 uppercase">Afficher la carte</span>
+      <span class="mt-1 block text-sm text-stone-600">{address}</span>
+    </span>
+    <span class="max-w-sm text-xs text-stone-600">
+      La carte est fournie par Google Maps : en l’affichant, vous acceptez le dépôt de cookies par Google.
+    </span>
+  </a>
+</div>
+
+<style>
+  /* Fond évoquant un plan de ville tant que la carte n'est pas chargée. */
+  .map-facade {
+    background-color: #e7e5e4;
+    background-image:
+      linear-gradient(115deg, transparent 47.5%, rgb(255 255 255 / 0.9) 47.5% 50.5%, transparent 50.5%),
+      linear-gradient(28deg, transparent 61%, rgb(255 255 255 / 0.75) 61% 63%, transparent 63%),
+      repeating-linear-gradient(0deg, rgb(255 255 255 / 0.55) 0 2px, transparent 2px 64px),
+      repeating-linear-gradient(90deg, rgb(255 255 255 / 0.55) 0 2px, transparent 2px 88px);
+  }
+</style>

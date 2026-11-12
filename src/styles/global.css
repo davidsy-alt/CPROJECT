@@ -1,0 +1,437 @@
+@import 'tailwindcss';
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/barlow-condensed/500.css';
+@import '@fontsource/barlow-condensed/600.css';
+@import '@fontsource/barlow-condensed/700.css';
+@import '@fontsource/barlow-condensed/700-italic.css';
+
+@theme {
+  /* Texte courant : Barlow. Titres, menu et boutons : Barlow Condensed (esprit signalétique de chantier). */
+  --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
+
+  /* Rouge CPROJECT : celui du logo et du site d'origine (#d94949). */
+  --color-brand-50: #fdf3f2;
+  --color-brand-100: #fce5e3;
+  --color-brand-200: #facfcc;
+  --color-brand-300: #f5ada8;
+  --color-brand-400: #ec7d76;
+  --color-brand-500: #d94949;
+  --color-brand-600: #c53535;
+  --color-brand-700: #a52929;
+  --color-brand-800: #892626;
+  --color-brand-900: #722525;
+  --color-brand-950: #3e0f0f;
+
+  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.05), 0 10px 28px -14px rgb(28 25 23 / 0.22);
+  --shadow-lift: 0 2px 6px rgb(28 25 23 / 0.06), 0 28px 50px -22px rgb(28 25 23 / 0.45);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+  }
+
+  /* Pas de défilement de la page derrière une fenêtre ouverte (contact, visionneuse photo). */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  body {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    line-height: 1.05;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-brand-600);
+    color: #fff;
+  }
+
+  /* Couleur d'accent : rouge CPROJECT par défaut ; chaque page prestation (data-accent) la remplace
+     par la sienne. --accent-light est sa version éclaircie, lisible sur fond sombre. */
+  :root {
+    --accent: var(--color-brand-500);
+    --accent-light: var(--color-brand-500);
+  }
+
+  [data-accent] {
+    --accent-light: color-mix(in oklab, var(--accent) 72%, white);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+
+  /* ---------- Boutons ---------- */
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-center font-display text-lg leading-tight font-semibold tracking-wider uppercase transition duration-200;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn svg {
+    width: 1.15em;
+    height: 1.15em;
+    flex: none;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2.5 text-base;
+  }
+
+  .btn-lg {
+    @apply px-7 py-4 text-xl;
+  }
+
+  /* Le gros bouton de contact de l'accueil. */
+  .btn-xl {
+    @apply rounded-2xl px-8 py-5 text-2xl sm:px-10;
+  }
+
+  .btn-primary {
+    @apply bg-brand-600 text-white hover:bg-brand-700;
+    box-shadow: 0 12px 26px -12px rgb(197 53 53 / 0.75);
+  }
+
+  .btn-dark {
+    @apply bg-stone-900 text-white hover:bg-stone-700;
+  }
+
+  .btn-light {
+    @apply bg-white text-stone-950 hover:bg-stone-100;
+  }
+
+  .btn-outline {
+    @apply border-2 border-stone-300 bg-white text-stone-900 hover:border-stone-900;
+  }
+
+  .btn-ghost-light {
+    @apply border-2 border-white/25 text-white hover:border-white/60 hover:bg-white/10;
+  }
+
+  .btn[disabled] {
+    @apply cursor-not-allowed opacity-45;
+    box-shadow: none;
+  }
+
+  /* Halo discret qui se répète autour du bouton « Contact » de l'en-tête, pour attirer l'œil. */
+  .btn-attention {
+    position: relative;
+  }
+
+  .btn-attention::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    animation: attention 3.6s ease-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-attention::after {
+      animation: none;
+    }
+  }
+
+  /* ---------- Titres ---------- */
+  /* Petit libellé au-dessus d'un titre, précédé d'une barre inclinée (rappel de l'italique du logo). */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 font-display text-base font-semibold tracking-[0.2em] uppercase;
+  }
+
+  .eyebrow::before {
+    content: '';
+    flex: none;
+    width: 2rem;
+    height: 0.5rem;
+    background: currentColor;
+    transform: skewX(-20deg);
+  }
+
+  .title-section {
+    @apply font-display text-4xl font-bold tracking-tight text-balance text-stone-950 sm:text-5xl;
+  }
+
+  /* Pastille inclinée « Q1 » devant une question. Police système : son Q ne se confond pas avec un zéro. */
+  .q-badge {
+    @apply flex h-9 shrink-0 items-center rounded-md bg-stone-950 px-2.5 text-base font-bold text-white;
+    font-family: system-ui, 'Segoe UI', Arial, sans-serif;
+    letter-spacing: 0.02em;
+    transform: skewX(-12deg);
+  }
+
+  .q-badge > span {
+    display: block;
+    transform: skewX(12deg);
+  }
+
+  /* ---------- Menu ---------- */
+  .nav-link {
+    @apply inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3.5 py-2 font-display text-lg font-semibold tracking-wider text-stone-700 uppercase transition hover:bg-stone-100 hover:text-stone-950;
+  }
+
+  .nav-link[aria-current='page'],
+  .nav-link[data-current] {
+    @apply text-brand-600;
+  }
+
+  .dropdown-panel {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease,
+      visibility 0.18s;
+  }
+
+  [data-dropdown][data-open] .dropdown-panel {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (hover: hover) {
+    [data-dropdown]:hover .dropdown-panel {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  [data-dropdown][data-open] [data-dropdown-chevron] {
+    transform: rotate(180deg);
+  }
+
+  /* ---------- Fonds ---------- */
+  /* Fond sombre : fines hachures inclinées et halo de la couleur d'accent en haut à droite. */
+  .texture-dark {
+    background-image:
+      radial-gradient(60rem 32rem at 88% -12%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 62%),
+      repeating-linear-gradient(-70deg, rgb(255 255 255 / 0.03) 0 1px, transparent 1px 26px);
+  }
+
+  .texture-light {
+    background-image: repeating-linear-gradient(-70deg, rgb(28 25 23 / 0.035) 0 1px, transparent 1px 26px);
+  }
+
+  /* Teintes dérivées de la couleur d'accent de la prestation. */
+  .accent-soft {
+    background-color: color-mix(in oklab, var(--accent) 14%, white);
+  }
+
+  .accent-ink {
+    color: color-mix(in oklab, var(--accent) 68%, #1c1917);
+  }
+
+  /* ---------- Formulaire ---------- */
+  .field-label {
+    @apply block text-sm font-semibold text-stone-700;
+  }
+
+  .field-input {
+    @apply mt-1.5 block w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-900 transition outline-none placeholder:text-stone-400 focus:border-brand-600 focus:ring-4 focus:ring-brand-100;
+  }
+
+  /* Questionnaire : sans JavaScript toutes les questions sont affichées à la suite ;
+     avec JavaScript (data-enhanced) on n'affiche qu'une étape à la fois. */
+  .qcm:not([data-enhanced]) [data-qcm-js] {
+    display: none;
+  }
+
+  .qcm:not([data-enhanced]) [data-qcm-step] + [data-qcm-step] {
+    margin-top: 2.5rem;
+  }
+
+  .qcm[data-enhanced] [data-qcm-step]:not([data-active]) {
+    display: none;
+  }
+
+  .qcm[data-enhanced] [data-qcm-step][data-active] {
+    animation: qcm-in 0.34s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .qcm[data-enhanced][data-dir='back'] [data-qcm-step][data-active] {
+    animation-name: qcm-in-back;
+  }
+
+  .qcm [data-qcm-success] {
+    display: none;
+  }
+
+  .qcm[data-sent] [data-qcm-body] {
+    display: none;
+  }
+
+  .qcm[data-sent='webhook'] [data-qcm-success='webhook'],
+  .qcm[data-sent='mail'] [data-qcm-success='mail'] {
+    display: block;
+    animation: qcm-in 0.34s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .qcm-chip {
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-full border border-stone-200 bg-stone-50 py-1 pr-3 pl-1 text-sm font-medium text-stone-800 transition hover:border-stone-400;
+  }
+
+  .qcm-chip-letter {
+    @apply flex size-6 items-center justify-center rounded-full bg-brand-600 font-display text-sm font-bold text-white;
+  }
+
+  .qcm-chip-edit {
+    @apply text-xs font-semibold tracking-wide text-brand-700 uppercase;
+  }
+
+  /* ---------- Fenêtres (contact, visionneuse) ---------- */
+  dialog.modal {
+    margin: auto;
+    width: min(100vw - 1.5rem, 42rem);
+    max-width: none;
+    max-height: min(100dvh - 1.5rem, 50rem);
+    padding: 0;
+    border: 0;
+    border-radius: 1.5rem;
+    background: #fff;
+    color: inherit;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    box-shadow: 0 40px 80px -20px rgb(12 10 9 / 0.6);
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s ease,
+      overlay 0.22s allow-discrete,
+      display 0.22s allow-discrete;
+  }
+
+  dialog.modal[open] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    dialog.modal[open] {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+    }
+  }
+
+  dialog.modal::backdrop {
+    background: rgb(12 10 9 / 0.72);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Petit écran : la fenêtre occupe tout l'écran et défile d'un bloc. */
+  @media (max-width: 639px) {
+    dialog.modal {
+      width: 100vw;
+      height: 100dvh;
+      max-height: none;
+      border-radius: 0;
+    }
+  }
+
+  /* Grand écran : en-tête et pied de la fenêtre restent fixes, seul le contenu défile. */
+  @media (min-width: 640px) and (min-height: 700px) {
+    dialog.modal[open] {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    dialog.modal .modal-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+
+  dialog.lightbox {
+    margin: 0;
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    background: rgb(12 10 9 / 0.96);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  dialog.lightbox::backdrop {
+    background: transparent;
+  }
+}
+
+@keyframes attention {
+  0% {
+    box-shadow: 0 0 0 0 rgb(217 73 73 / 0.5);
+  }
+
+  40%,
+  100% {
+    box-shadow: 0 0 0 13px rgb(217 73 73 / 0);
+  }
+}
+
+@keyframes qcm-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes qcm-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

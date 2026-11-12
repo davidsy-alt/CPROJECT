@@ -1,0 +1,221 @@
+---
+/**
+ * Formulaire de contact sous forme de QCM : une question par écran (réponses A, B, C…),
+ * puis les coordonnées. Les questions se modifient dans src/data/qcm.ts.
+ * Le comportement (étapes, envoi) est dans src/scripts/contact.ts.
+ */
+import { qcmLetters, qcmQuestions } from '../data/qcm';
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Préfixe des identifiants HTML : indispensable si le formulaire apparaît deux fois sur une page. */
+  idPrefix: string;
+}
+
+const { idPrefix } = Astro.props;
+const id = (name: string) => `${idPrefix}-${name}`;
+const stepCount = qcmQuestions.length + 1;
+---
+
+<form
+  class="qcm"
+  data-qcm
+  data-webhook={site.contactWebhookUrl}
+  data-email={site.email}
+  action={`mailto:${site.email}`}
+  method="post"
+  enctype="text/plain"
+>
+  <div data-qcm-body>
+    <!-- Avancement -->
+    <div data-qcm-js class="mb-7">
+      <div class="flex items-center justify-between gap-4">
+        <p data-qcm-counter class="font-display text-base font-semibold tracking-[0.18em] text-brand-700 uppercase">
+          Question 1 sur {qcmQuestions.length}
+        </p>
+        <p class="text-sm text-stone-500">Moins d’une minute</p>
+      </div>
+      <div class="mt-3 flex gap-1.5" aria-hidden="true">
+        {
+          Array.from({ length: stepCount }, () => (
+            <span
+              data-qcm-bar
+              class="h-1.5 flex-1 rounded-full bg-stone-200 transition-colors duration-300 data-[state=current]:bg-brand-400 data-[state=done]:bg-brand-600"
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Questions -->
+    {
+      qcmQuestions.map((question, qi) => (
+        <fieldset data-qcm-step data-qcm-question={question.id} data-qcm-title={question.title} class="min-w-0">
+          <legend
+            data-qcm-heading
+            tabindex="-1"
+            class="mb-5 flex w-full items-center gap-3.5 font-display text-3xl leading-none font-bold text-stone-950 outline-none sm:text-4xl"
+          >
+            <span class="q-badge"><span>Q{qi + 1}</span></span>
+            {question.title}
+          </legend>
+          {question.help && <p class="-mt-2 mb-4 text-stone-600">{question.help}</p>}
+          <div class="grid gap-3">
+            {question.options.map((option, oi) => (
+              <label
+                data-qcm-option
+                class="group relative flex cursor-pointer items-center gap-4 rounded-2xl border-2 border-stone-200 bg-white p-3.5 transition duration-150 hover:border-stone-400 has-checked:border-brand-600 has-checked:bg-brand-50 has-focus-visible:ring-4 has-focus-visible:ring-brand-200 sm:p-4"
+              >
+                <input
+                  type="radio"
+                  name={question.id}
+                  value={`${qcmLetters[oi]} - ${option.label}`}
+                  data-letter={qcmLetters[oi]}
+                  data-label={option.label}
+                  required
+                  class="peer sr-only"
+                />
+                <span class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-stone-100 font-display text-2xl font-bold text-stone-700 transition duration-150 peer-checked:bg-brand-600 peer-checked:text-white">
+                  {qcmLetters[oi]}
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block text-lg leading-snug font-semibold text-stone-950">{option.label}</span>
+                  {option.detail && <span class="mt-0.5 block text-sm leading-snug text-stone-500">{option.detail}</span>}
+                </span>
+                <span class="flex size-7 shrink-0 items-center justify-center rounded-full border-2 border-stone-300 text-transparent transition duration-150 peer-checked:border-brand-600 peer-checked:bg-brand-600 peer-checked:text-white">
+                  <Icon name="check" class="size-4" />
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ))
+    }
+
+    <!-- Coordonnées -->
+    <fieldset data-qcm-step data-qcm-contact class="min-w-0">
+      <legend
+        data-qcm-heading
+        tabindex="-1"
+        class="mb-4 w-full font-display text-3xl leading-none font-bold text-stone-950 outline-none sm:text-4xl"
+      >
+        Vos coordonnées
+      </legend>
+
+      <div data-qcm-js class="mb-5">
+        <p class="text-sm text-stone-500">Vos réponses (cliquez pour modifier) :</p>
+        <ul data-qcm-recap class="mt-2 flex flex-wrap gap-2"></ul>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for={id('nom')} class="field-label">Nom <span aria-hidden="true" class="text-brand-600">*</span></label>
+          <input id={id('nom')} name="nom" type="text" autocomplete="family-name" required class="field-input" />
+        </div>
+        <div>
+          <label for={id('prenom')} class="field-label">Prénom</label>
+          <input id={id('prenom')} name="prenom" type="text" autocomplete="given-name" class="field-input" />
+        </div>
+        <div>
+          <label for={id('telephone')} class="field-label">
+            Téléphone <span aria-hidden="true" class="text-brand-600">*</span>
+          </label>
+          <input
+            id={id('telephone')}
+            name="telephone"
+            type="tel"
+            autocomplete="tel"
+            required
+            placeholder="06 12 34 56 78"
+            class="field-input"
+          />
+        </div>
+        <div>
+          <label for={id('email')} class="field-label">Email <span aria-hidden="true" class="text-brand-600">*</span></label>
+          <input id={id('email')} name="email" type="email" autocomplete="email" required maxlength="80" class="field-input" />
+        </div>
+        <div class="sm:col-span-2">
+          <label for={id('message')} class="field-label">Commentaires</label>
+          <textarea
+            id={id('message')}
+            name="message"
+            rows="3"
+            placeholder="Surface, adresse du chantier, précisions utiles…"
+            class="field-input"></textarea>
+        </div>
+
+        <!-- Champ anti-spam : invisible pour les visiteurs, rempli par les robots. -->
+        <div class="hidden" aria-hidden="true">
+          <label for={id('site-web')}>Site web</label>
+          <input id={id('site-web')} name="site_web" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <label class="flex items-start gap-3 text-sm leading-relaxed text-stone-600 sm:col-span-2">
+          <input
+            name="consentement"
+            type="checkbox"
+            value="oui"
+            required
+            class="mt-1 size-4 shrink-0 rounded border-stone-300 accent-brand-600"
+          />
+          <span>
+            En cochant cette case, j’accepte que les données saisies dans le formulaire ci-dessus soient utilisées pour me
+            recontacter dans le cadre de ma demande, conformément à
+            <a href="/infos-legales/" class="font-semibold text-brand-700 underline underline-offset-2 hover:text-brand-800"
+              >notre politique de confidentialité</a
+            >.
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Navigation -->
+    <div class="mt-7 flex items-center gap-3">
+      <button type="button" data-qcm-js data-qcm-prev class="btn btn-outline btn-sm" hidden>
+        <Icon name="arrow-left" /> Retour
+      </button>
+      <button type="button" data-qcm-js data-qcm-next class="btn btn-dark ml-auto" disabled>
+        Suivant <Icon name="arrow-right" />
+      </button>
+      <button type="submit" data-qcm-submit class="btn btn-primary ml-auto">
+        Envoyer ma demande <Icon name="send" />
+      </button>
+    </div>
+    <p data-qcm-status class="mt-4 min-h-6 text-sm font-medium text-brand-700" role="status" aria-live="polite"></p>
+  </div>
+
+  <!-- Confirmation : demande transmise -->
+  <div data-qcm-success="webhook" class="py-6 text-center">
+    <span class="mx-auto flex size-16 items-center justify-center rounded-full bg-green-100 text-green-700">
+      <Icon name="check" class="size-8" />
+    </span>
+    <h3 data-qcm-success-title tabindex="-1" class="mt-5 text-4xl font-bold text-stone-950 outline-none">
+      Le formulaire a été envoyé !
+    </h3>
+    <p class="mx-auto mt-3 max-w-md text-lg text-stone-600">Nous vous recontacterons dans les meilleurs délais.</p>
+    <button type="button" data-qcm-restart class="btn btn-outline btn-sm mt-7">Faire une nouvelle demande</button>
+  </div>
+
+  <!-- Confirmation : e-mail pré-rempli (tant qu'aucun service d'envoi n'est branché) -->
+  <div data-qcm-success="mail" class="py-6 text-center">
+    <span class="mx-auto flex size-16 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+      <Icon name="mail" class="size-8" />
+    </span>
+    <h3 data-qcm-success-title tabindex="-1" class="mt-5 text-4xl font-bold text-stone-950 outline-none">
+      Votre e-mail est prêt
+    </h3>
+    <p class="mx-auto mt-3 max-w-md text-lg text-stone-600">
+      Votre messagerie s’ouvre avec votre demande déjà rédigée : il ne vous reste qu’à l’envoyer.
+    </p>
+    <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+      <a data-qcm-mailto href={`mailto:${site.email}`} class="btn btn-primary btn-sm"><Icon name="mail" /> Ouvrir mon e-mail</a>
+      <button type="button" data-qcm-restart class="btn btn-outline btn-sm">Modifier ma demande</button>
+    </div>
+    <p class="mx-auto mt-6 max-w-md text-sm text-stone-500">
+      Rien ne s’ouvre ? Écrivez-nous directement à
+      <a href={`mailto:${site.email}`} class="font-semibold text-stone-800 underline underline-offset-2">{site.email}</a
+      >.
+    </p>
+  </div>
+</form>

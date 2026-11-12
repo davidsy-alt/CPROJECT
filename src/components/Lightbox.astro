@@ -1,0 +1,117 @@
+---
+/**
+ * Visionneuse de photos plein écran.
+ * Tout lien `<a data-lightbox="nom-du-groupe" href="grande-image">` s'ouvre dedans ; les liens du même
+ * groupe se parcourent avec les flèches (écran, clavier) ou en balayant sur mobile.
+ * Sans JavaScript, le lien ouvre simplement la grande image.
+ */
+import Icon from './Icon.astro';
+
+const buttonClass =
+  'flex size-12 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/25';
+---
+
+<dialog id="lightbox" class="lightbox" aria-label="Photo en grand format">
+  <div data-lightbox-stage class="flex h-full w-full flex-col items-center justify-center gap-4 px-4 py-16 sm:px-20">
+    <img
+      data-lightbox-image
+      alt=""
+      class="h-auto max-h-[calc(100dvh-11rem)] w-auto max-w-full shrink-0 rounded-lg object-contain shadow-lift"
+    />
+    <p class="flex items-center gap-4 text-sm text-stone-300">
+      <span data-lightbox-counter class="font-display text-lg font-semibold tracking-widest text-white"></span>
+      <span data-lightbox-caption></span>
+    </p>
+  </div>
+
+  <button type="button" data-lightbox-close class={`${buttonClass} absolute top-4 right-4`} aria-label="Fermer">
+    <Icon name="x" class="size-6" />
+  </button>
+  <button
+    type="button"
+    data-lightbox-prev
+    class={`${buttonClass} absolute top-1/2 left-3 -translate-y-1/2 sm:left-5`}
+    aria-label="Photo précédente"
+  >
+    <Icon name="chevron-left" class="size-7" />
+  </button>
+  <button
+    type="button"
+    data-lightbox-next
+    class={`${buttonClass} absolute top-1/2 right-3 -translate-y-1/2 sm:right-5`}
+    aria-label="Photo suivante"
+  >
+    <Icon name="chevron-right" class="size-7" />
+  </button>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#lightbox');
+
+  if (dialog && typeof dialog.showModal === 'function') {
+    const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
+    const stage = dialog.querySelector<HTMLElement>('[data-lightbox-stage]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+    const counter = dialog.querySelector<HTMLElement>('[data-lightbox-counter]')!;
+    const prev = dialog.querySelector<HTMLButtonElement>('[data-lightbox-prev]')!;
+    const next = dialog.querySelector<HTMLButtonElement>('[data-lightbox-next]')!;
+    const close = dialog.querySelector<HTMLButtonElement>('[data-lightbox-close]')!;
+
+    let group: HTMLAnchorElement[] = [];
+    let index = 0;
+
+    const show = (target: number) => {
+      index = (target + group.length) % group.length;
+      const link = group[index];
+      image.src = link.href;
+      image.alt = link.dataset.alt ?? '';
+      caption.textContent = link.dataset.caption ?? '';
+      counter.textContent = group.length > 1 ? `${index + 1} / ${group.length}` : '';
+      prev.hidden = next.hidden = group.length < 2;
+    };
+
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const link = event.target.closest<HTMLAnchorElement>('a[data-lightbox]');
+      if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      group = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]')).filter(
+        (item) => item.dataset.lightbox === link.dataset.lightbox,
+      );
+      show(group.indexOf(link));
+      dialog.showModal();
+    });
+
+    prev.addEventListener('click', () => show(index - 1));
+    next.addEventListener('click', () => show(index + 1));
+    close.addEventListener('click', () => dialog.close());
+
+    // Clic à côté de la photo : on ferme.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog || event.target === stage) dialog.close();
+    });
+
+    dialog.addEventListener('keydown', (event) => {
+      if (group.length < 2) return;
+      if (event.key === 'ArrowLeft') show(index - 1);
+      if (event.key === 'ArrowRight') show(index + 1);
+    });
+
+    // Balayage horizontal sur écran tactile.
+    let startX = 0;
+    dialog.addEventListener('touchstart', (event) => (startX = event.touches[0].clientX), { passive: true });
+    dialog.addEventListener(
+      'touchend',
+      (event) => {
+        const delta = event.changedTouches[0].clientX - startX;
+        if (group.length > 1 && Math.abs(delta) > 50) show(index + (delta < 0 ? 1 : -1));
+      },
+      { passive: true },
+    );
+
+    dialog.addEventListener('close', () => {
+      image.removeAttribute('src');
+      group[index]?.focus();
+    });
+  }
+</script>

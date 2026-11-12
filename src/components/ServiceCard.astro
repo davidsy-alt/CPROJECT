@@ -1,0 +1,61 @@
+---
+/** Carte d'une prestation (page d'accueil et « autres prestations »). */
+import { Image } from 'astro:assets';
+import { serviceHref, type Service } from '../data/services';
+import Icon from './Icon.astro';
+
+interface Props {
+  service: Service;
+  /** Numéro affiché sur la photo (01, 02…). */
+  index?: number;
+  /** Version réduite, sans sous-titre. */
+  compact?: boolean;
+}
+
+const { service, index, compact = false } = Astro.props;
+---
+
+<a
+  href={serviceHref(service)}
+  class="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-stone-200 transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+  style={`--accent:${service.accent}`}
+>
+  <div class:list={['relative overflow-hidden bg-stone-200', compact ? 'aspect-[16/10]' : 'aspect-[4/3]']}>
+    <Image
+      src={service.cover.src}
+      alt={service.cover.alt}
+      widths={[360, 540, 720, 960]}
+      sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+      class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+      style={`object-position:${service.cover.position ?? 'center'}`}
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-stone-950/55 via-transparent to-transparent" aria-hidden="true"></div>
+    <span class="absolute top-5 -left-2 h-2.5 w-20 -skew-x-[20deg] bg-(--accent)" aria-hidden="true"></span>
+    {
+      index !== undefined && (
+        <span class="absolute right-4 bottom-3 font-display text-4xl leading-none font-bold text-white/85 italic" aria-hidden="true">
+          {String(index).padStart(2, '0')}
+        </span>
+      )
+    }
+  </div>
+  <div class:list={['flex flex-1 flex-col', compact ? 'p-5' : 'p-6 sm:p-7']}>
+    <h3 class:list={['font-bold tracking-wide text-stone-950 uppercase', compact ? 'text-xl' : 'text-2xl sm:text-[1.7rem]']}>
+      {compact ? service.label : service.cardTitle}
+    </h3>
+    {!compact && <p class="mt-2 text-stone-600">{service.cardText}</p>}
+    <span
+      class:list={[
+        'mt-auto inline-flex items-center gap-2 font-display font-semibold tracking-widest text-brand-700 uppercase',
+        compact ? 'pt-3 text-sm' : 'pt-6 text-base',
+      ]}
+    >
+      Découvrir
+      <Icon name="arrow-right" class="size-4 transition duration-300 group-hover:translate-x-1.5" />
+    </span>
+  </div>
+  <span
+    class="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-(--accent) transition duration-300 group-hover:scale-x-100"
+    aria-hidden="true"
+  ></span>
+</a>

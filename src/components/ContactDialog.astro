@@ -1,0 +1,48 @@
+---
+/**
+ * Fenêtre de contact : s'ouvre depuis n'importe quel bouton « Contact » du site
+ * (éléments portant l'attribut data-open-contact) et contient le formulaire QCM.
+ */
+import { qcmQuestions } from '../data/qcm';
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import QcmForm from './QcmForm.astro';
+---
+
+<dialog id="contact-dialog" class="modal" aria-labelledby="contact-dialog-title">
+  <header class="relative shrink-0 overflow-hidden bg-stone-950 px-6 pt-6 pb-5 text-white sm:px-9">
+    <div class="texture-dark absolute inset-0" aria-hidden="true"></div>
+    <div class="relative pr-12">
+      <p class="eyebrow text-brand-400">Contact</p>
+      <h2 id="contact-dialog-title" class="mt-1.5 text-4xl font-bold tracking-tight">Parlons de votre projet</h2>
+      <p class="mt-1.5 text-base text-stone-300">
+        {qcmQuestions.length} questions, puis vos coordonnées : nous vous rappelons sur le créneau de votre choix.
+      </p>
+    </div>
+    <button
+      type="button"
+      data-close-contact
+      class="absolute top-4 right-4 flex size-11 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+      aria-label="Fermer la fenêtre de contact"
+    >
+      <Icon name="x" class="size-6" />
+    </button>
+  </header>
+
+  <div class="modal-body px-6 pt-6 pb-5 sm:px-9">
+    <QcmForm idPrefix="fenetre" />
+  </div>
+
+  <footer class="shrink-0 border-t border-stone-200 bg-stone-50 px-6 py-3.5 sm:px-9">
+    <ul class="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm font-medium text-stone-700">
+      {
+        site.reassurance.map((item) => (
+          <li class="flex items-center gap-2">
+            <Icon name="check" class="size-4 text-brand-600" />
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+  </footer>
+</dialog>

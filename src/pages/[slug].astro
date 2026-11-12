@@ -1,0 +1,292 @@
+---
+/** Modèle commun aux six pages prestations (contenu dans src/data/services.ts). */
+import { Image, getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { services, type Service } from '../data/services';
+import { mentionZone, site } from '../data/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const others = services.filter((other) => other.slug !== service.slug);
+const longTitle = service.title.length > 40;
+
+// Photos : vignette recadrée dans la page, grande version dans la visionneuse.
+const photos = await Promise.all(
+  service.photos.map(async (item) => ({
+    ...item,
+    large: await getImage({ src: item.src, width: Math.min(item.src.width, 1800) }),
+  })),
+);
+---
+
+<Layout title={`${service.metaTitle} | CPROJECT’`}>
+  <div data-accent style={`--accent:${service.accent}`}>
+    <!-- ======= En-tête ======= -->
+    <section class="relative isolate overflow-hidden bg-stone-950 text-white">
+      <div class="texture-dark absolute inset-0 -z-10" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[30%] lg:block" aria-hidden="true">
+        <span class="absolute -inset-y-4 right-[58%] w-3 -skew-x-[20deg] bg-(--accent) opacity-70"></span>
+        <span class="absolute -inset-y-4 right-[30%] w-24 -skew-x-[20deg] bg-(--accent)"></span>
+        <span class="absolute -inset-y-4 right-[6%] w-14 -skew-x-[20deg] bg-(--accent) opacity-30"></span>
+      </div>
+
+      <div class="container-page py-12 sm:py-16 lg:py-20">
+        <nav aria-label="Fil d’Ariane" class="text-sm text-stone-400">
+          <ol class="flex flex-wrap items-center gap-2">
+            <li><a href="/" class="transition hover:text-white">Accueil</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="/#prestations" class="transition hover:text-white">Prestations</a></li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" class="text-stone-200">{service.label}</li>
+          </ol>
+        </nav>
+
+        <div class="max-w-3xl">
+          <p class="eyebrow mt-8 text-(--accent-light)">{service.label}</p>
+          <h1
+            class:list={[
+              'mt-4 leading-[0.98] font-bold tracking-tight text-balance',
+              longTitle ? 'text-4xl sm:text-5xl lg:text-6xl' : 'text-5xl sm:text-6xl lg:text-7xl',
+            ]}
+          >
+            {service.title}
+          </h1>
+          <div class="mt-7 space-y-4 border-l-4 border-(--accent) pl-5 text-lg text-stone-200 sm:text-xl">
+            {service.lead.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+          <div class="mt-9 flex flex-wrap items-center gap-4">
+            <a
+              href="/contact/#formulaire"
+              data-open-contact
+              data-preset-question={service.qcmTravaux !== undefined ? 'travaux' : undefined}
+              data-preset-option={service.qcmTravaux}
+              class="btn btn-primary btn-lg"
+            >
+              Demander un devis gratuit <Icon name="arrow-right" />
+            </a>
+            <a href="/realisation-lorraine/" class="btn btn-ghost-light btn-lg">Nos réalisations</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= Présentation ======= -->
+    {
+      service.blocks.length > 0 && (
+        <section class="py-16 lg:py-24">
+          <div class="container-page grid gap-x-16 gap-y-12 lg:grid-cols-12">
+            <div class="space-y-7 text-lg text-stone-700 lg:col-span-7">
+              {service.blocks.map((block) => {
+                if (block.type === 'facts') {
+                  return (
+                    <div class="accent-soft space-y-3 rounded-2xl border-l-4 border-(--accent) p-6 font-semibold text-stone-950 sm:p-7">
+                      {block.lines.map((line) => (
+                        <p>{line}</p>
+                      ))}
+                    </div>
+                  );
+                }
+                if (block.type === 'p') {
+                  return (
+                    <div class="space-y-3">
+                      {block.lines.map((line) => (
+                        <p>{line}</p>
+                      ))}
+                    </div>
+                  );
+                }
+                if (block.type === 'list') {
+                  return (
+                    <div>
+                      {block.intro && <p>{block.intro}</p>}
+                      <ul class:list={['space-y-3.5', block.intro && 'mt-4']}>
+                        {block.items.map((item) => (
+                          <li class="flex gap-3.5">
+                            <span class="accent-soft accent-ink mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full">
+                              <Icon name="check" class="size-4" />
+                            </span>
+                            <span class="font-medium text-stone-900">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                }
+                return (
+                  <p>
+                    <a href={block.href} target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                      {block.label} <Icon name="external" />
+                    </a>
+                  </p>
+                );
+              })}
+            </div>
+
+            {photos.length > 0 && (
+              <div class="lg:col-span-5">
+                <ul class="grid grid-cols-2 gap-3 lg:sticky lg:top-28">
+                  {photos.map((item, i) => (
+                    <li class:list={[i === 0 && 'col-span-2']}>
+                      <a
+                        href={item.large.src}
+                        data-lightbox={service.slug}
+                        data-alt={item.alt}
+                        data-caption={item.alt}
+                        class:list={[
+                          'group relative block overflow-hidden rounded-2xl bg-stone-200',
+                          i === 0 ? 'aspect-[4/3]' : 'aspect-square',
+                        ]}
+                      >
+                        <Image
+                          src={item.src}
+                          alt={item.alt}
+                          widths={i === 0 ? [480, 720, 960, 1200] : [320, 480, 640]}
+                          sizes={i === 0 ? '(min-width: 1024px) 500px, 100vw' : '(min-width: 1024px) 245px, 50vw'}
+                          class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+                        />
+                        <span class="absolute right-3 bottom-3 flex size-10 items-center justify-center rounded-full bg-white/90 text-stone-900 opacity-0 shadow-card transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                          <Icon name="zoom" />
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- ======= En résumé ======= -->
+    <section class="texture-light border-y border-stone-200 bg-stone-100 py-16 lg:py-24">
+      <div class="container-page">
+        <p class="eyebrow accent-ink">{service.resumeEyebrow ?? 'En résumé'}</p>
+        {service.resumeTitle && <h2 class="title-section mt-4">{service.resumeTitle}</h2>}
+
+        <div class="mt-10 grid gap-6 lg:grid-cols-3">
+          {
+            service.resume.map((column) => (
+              <article class="relative flex flex-col overflow-hidden rounded-2xl bg-white p-7 shadow-card ring-1 ring-stone-200 sm:p-8">
+                <span class="absolute inset-x-0 top-0 h-1.5 bg-(--accent)" aria-hidden="true" />
+                <div class="flex items-center gap-4">
+                  <span class="accent-soft accent-ink flex size-12 shrink-0 items-center justify-center rounded-xl">
+                    <Icon name={column.icon} class="size-6" />
+                  </span>
+                  <h3 class="text-2xl font-bold tracking-wide text-stone-950 uppercase sm:text-3xl">{column.title}</h3>
+                </div>
+                {column.intro && (
+                  <div class="mt-5 space-y-3 text-stone-700">
+                    {column.intro.map((paragraph) => (
+                      <p>{paragraph}</p>
+                    ))}
+                  </div>
+                )}
+                <ul class="mt-5 space-y-3">
+                  {column.items.map((item) => (
+                    <li class="flex gap-3">
+                      <span class="accent-ink mt-1 shrink-0">
+                        <Icon name="check" class="size-5" />
+                      </span>
+                      <span class="font-medium text-stone-900">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                {column.image && (
+                  <div class="mt-auto pt-7">
+                    <Image src={column.image.src} alt={column.image.alt} class="w-full rounded-xl" />
+                  </div>
+                )}
+              </article>
+            ))
+          }
+        </div>
+
+        {
+          (service.video || service.document) && (
+            <div class="mt-6 grid gap-6 lg:grid-cols-12">
+              {service.video && (
+                <div class="relative aspect-video overflow-hidden rounded-2xl bg-stone-900 shadow-card lg:col-span-8">
+                  <a
+                    href={`https://www.youtube.com/watch?v=${service.video.id}`}
+                    target="_blank"
+                    rel="noopener"
+                    data-embed={`https://www.youtube-nocookie.com/embed/${service.video.id}?autoplay=1&rel=0`}
+                    data-embed-title={service.video.title}
+                    class="group absolute inset-0 block"
+                  >
+                    <Image
+                      src={service.video.poster}
+                      alt=""
+                      widths={[640, 960, 1280]}
+                      sizes="(min-width: 1024px) 820px, 100vw"
+                      class="h-full w-full object-cover opacity-55 transition duration-700 ease-out group-hover:scale-105"
+                    />
+                    <span class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white">
+                      <span class="flex size-20 items-center justify-center rounded-full bg-(--accent) shadow-lift transition duration-300 group-hover:scale-110">
+                        <Icon name="play" class="size-8 translate-x-0.5 fill-current" />
+                      </span>
+                      <span class="font-display text-3xl font-bold tracking-wide uppercase">{service.video.title}</span>
+                      <span class="max-w-sm text-xs text-stone-200">
+                        Vidéo hébergée par YouTube : en la lançant, vous acceptez le dépôt de cookies par YouTube.
+                      </span>
+                    </span>
+                  </a>
+                </div>
+              )}
+              {service.document && (
+                <div class="flex flex-col justify-between gap-6 rounded-2xl bg-stone-950 p-7 text-white shadow-card sm:p-8 lg:col-span-4">
+                  <div>
+                    <span class="flex size-14 items-center justify-center rounded-2xl bg-white/10 text-(--accent-light)">
+                      <Icon name="file" class="size-6" />
+                    </span>
+                    <h3 class="mt-5 text-3xl font-bold tracking-wide uppercase">Documentation</h3>
+                    <p class="mt-2 text-stone-300">La fiche de présentation de la solution, au format PDF.</p>
+                  </div>
+                  <a href={service.document.href} target="_blank" rel="noopener" class="btn btn-light">
+                    <Icon name="download" /> {service.document.label}
+                  </a>
+                </div>
+              )}
+            </div>
+          )
+        }
+
+        <p class="mt-10 max-w-5xl text-sm leading-relaxed text-stone-600">{mentionZone}</p>
+      </div>
+    </section>
+
+    <CtaBand
+      items={['Devis rapide et gratuit', 'Des techniciens qualifiés', site.reassuranceZone]}
+      certifications={service.certifications}
+      presetTravaux={service.qcmTravaux}
+    />
+  </div>
+
+  <!-- ======= Autres prestations ======= -->
+  <section class="py-16 lg:py-24">
+    <div class="container-page">
+      <p class="eyebrow text-brand-700">Nos prestations</p>
+      <h2 class="title-section mt-4">Découvrez nos autres prestations</h2>
+      <ul class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+        {
+          others.map((other) => (
+            <li>
+              <ServiceCard service={other} compact />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,194 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+import { site } from '../data/site';
+import { services, serviceHref } from '../data/services';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const current = (href: string) => (path === href ? 'page' : undefined);
+const inServices = services.some((service) => serviceHref(service) === path);
+---
+
+<!-- Bandeau d'informations (écrans larges) -->
+<div class="hidden bg-stone-950 text-sm text-stone-300 md:block">
+  <div class="container-page flex h-10 items-center justify-between gap-6">
+    <p class="flex items-center gap-2">
+      <Icon name="map-pin" class="size-4 text-brand-400" />
+      {site.address.street}, {site.address.postalCode} {site.address.city}
+    </p>
+    <p class="flex items-center gap-2">
+      <Icon name="award" class="size-4 text-brand-400" />
+      Entreprise RGE Qualibat, agréée Placo
+    </p>
+  </div>
+</div>
+
+<header class="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur">
+  <div class="container-page flex h-[4.5rem] items-center justify-between gap-4 lg:h-20">
+    <a href="/" class="shrink-0" aria-label={`${site.name} – retour à l’accueil`}>
+      <Image
+        src={logo}
+        alt={site.name}
+        width={150}
+        densities={[1, 2]}
+        loading="eager"
+        class="h-12 w-auto lg:h-14"
+      />
+    </a>
+
+    <!-- Menu (écrans larges) -->
+    <nav aria-label="Menu principal" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        <li><a href="/" class="nav-link" aria-current={current('/')}>Accueil</a></li>
+        <li class="relative" data-dropdown>
+          <button
+            type="button"
+            class="nav-link"
+            data-dropdown-toggle
+            data-current={inServices ? '' : undefined}
+            aria-expanded="false"
+            aria-controls="menu-prestations"
+          >
+            Prestations
+            <span data-dropdown-chevron class="transition-transform duration-200"><Icon name="chevron-down" class="size-4" /></span>
+          </button>
+          <div id="menu-prestations" class="dropdown-panel absolute top-full left-1/2 w-[42rem] -translate-x-1/2 pt-3">
+            <ul class="grid grid-cols-2 gap-1 rounded-2xl bg-white p-3 shadow-lift ring-1 ring-stone-200">
+              {
+                services.map((service) => (
+                  <li>
+                    <a
+                      href={serviceHref(service)}
+                      aria-current={current(serviceHref(service))}
+                      class="flex items-start gap-3.5 rounded-xl p-3.5 transition hover:bg-stone-100 aria-[current=page]:bg-stone-100"
+                    >
+                      <span class="mt-2 h-2.5 w-6 shrink-0 -skew-x-[20deg]" style={`background:${service.accent}`} />
+                      <span>
+                        <span class="block font-display text-xl leading-tight font-semibold tracking-wide text-stone-950 uppercase">
+                          {service.label}
+                        </span>
+                        <span class="mt-0.5 block text-sm leading-snug text-stone-500">{service.cardText}</span>
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a href="/realisation-lorraine/" class="nav-link" aria-current={current('/realisation-lorraine/')}>
+            Nos réalisations
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Le téléphone n'apparaît volontairement qu'en bas de page : le bouton Contact est l'accès principal. -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a
+        href="/contact/#formulaire"
+        data-open-contact
+        class="btn btn-primary btn-sm btn-attention lg:px-7 lg:py-3.5 lg:text-xl"
+      >
+        <Icon name="message" /> Contact
+      </a>
+      <button
+        type="button"
+        data-menu-toggle
+        class="group flex size-11 cursor-pointer items-center justify-center rounded-xl border border-stone-200 text-stone-900 transition hover:bg-stone-100 lg:hidden"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        aria-label="Menu"
+      >
+        <span class="group-aria-expanded:hidden"><Icon name="menu" class="size-6" /></span>
+        <span class="hidden group-aria-expanded:block"><Icon name="x" class="size-6" /></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu (mobile et tablette) -->
+  <nav
+    id="menu-mobile"
+    aria-label="Menu principal"
+    hidden
+    class="max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-stone-200 bg-white lg:hidden"
+  >
+    <div class="container-page py-5">
+      <ul class="space-y-1">
+        <li><a href="/" class="nav-link w-full" aria-current={current('/')}>Accueil</a></li>
+        <li>
+          <p class="px-3.5 pt-4 pb-1 font-display text-sm font-semibold tracking-[0.2em] text-stone-400 uppercase">
+            Prestations
+          </p>
+          <ul>
+            {
+              services.map((service) => (
+                <li>
+                  <a href={serviceHref(service)} class="nav-link w-full" aria-current={current(serviceHref(service))}>
+                    <span class="h-2 w-5 shrink-0 -skew-x-[20deg]" style={`background:${service.accent}`} />
+                    {service.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </li>
+        <li class="pt-3">
+          <a href="/realisation-lorraine/" class="nav-link w-full" aria-current={current('/realisation-lorraine/')}>
+            Nos réalisations
+          </a>
+        </li>
+        <li><a href="/contact/" class="nav-link w-full" aria-current={current('/contact/')}>Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Menu mobile : ouverture / fermeture.
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('menu-mobile');
+
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+    };
+    const isOpen = () => !menu.hasAttribute('hidden');
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+    menu.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+
+  // Sous-menu « Prestations » : au survol (souris), au clic ou au clavier.
+  document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((dropdown) => {
+    const button = dropdown.querySelector<HTMLButtonElement>('[data-dropdown-toggle]');
+    if (!button) return;
+    const setOpen = (open: boolean) => {
+      dropdown.toggleAttribute('data-open', open);
+      button.setAttribute('aria-expanded', String(open));
+    };
+    button.addEventListener('click', () => setOpen(!dropdown.hasAttribute('data-open')));
+    dropdown.addEventListener('focusout', (event) => {
+      if (!(event.relatedTarget instanceof Node) || !dropdown.contains(event.relatedTarget)) setOpen(false);
+    });
+    dropdown.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && dropdown.hasAttribute('data-open')) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+  });
+</script>

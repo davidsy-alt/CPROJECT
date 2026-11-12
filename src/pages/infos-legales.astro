@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const cardClass = 'rounded-2xl bg-white p-7 shadow-card ring-1 ring-stone-200 sm:p-8';
+const titleClass = 'text-2xl font-bold tracking-wide text-stone-950 uppercase sm:text-3xl';
+---
+
+<Layout title="Mentions légales | CPROJECT’" map noindex>
+  <PageHeader label="Infos légales" title="Mentions légales" />
+
+  <section class="texture-light bg-stone-100 py-14 lg:py-20">
+    <div class="container-page">
+      <div class="grid gap-6 lg:grid-cols-3">
+        <div class={cardClass}>
+          <h2 class={titleClass}>Nos coordonnées</h2>
+          <dl class="mt-5 space-y-3 text-stone-700">
+            <div>
+              <dt class="text-sm font-semibold tracking-wide text-stone-500 uppercase">Société</dt>
+              <dd class="font-medium text-stone-900">C PROJECT SARL CHEVRIER PLATRERIE</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-semibold tracking-wide text-stone-500 uppercase">Adresse</dt>
+              <dd class="font-medium text-stone-900">ZA du Pâtis des Saules, 88450 Vincey</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-semibold tracking-wide text-stone-500 uppercase">Siret</dt>
+              <dd class="font-medium text-stone-900">52114200000012</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-semibold tracking-wide text-stone-500 uppercase">Capital social</dt>
+              <dd class="font-medium text-stone-900">15 000</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-semibold tracking-wide text-stone-500 uppercase">
+                Directeur ou directrice de la publication
+              </dt>
+              <dd class="font-medium text-stone-900">M. CHEVRIER</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class={cardClass}>
+          <h2 class={titleClass}>Hébergeur</h2>
+          <p class="mt-5 font-medium text-stone-900">
+            SILVERNET<br />
+            19 rue des Martyrs<br />
+            69230 Saint-Genis-Laval
+          </p>
+        </div>
+
+        <div class={cardClass}>
+          <h2 class={titleClass}>Concepteur</h2>
+          <p class="mt-5 font-medium text-stone-900">
+            AROBASE SYSTEMES<br />
+            16 rue de l’Estrey<br />
+            88440 Nomexy<br />
+            Téléphone : 03 29 39 03 31
+          </p>
+        </div>
+      </div>
+
+      <div class={`${cardClass} mt-6`}>
+        <h2 class={titleClass}>Données personnelles et cookies</h2>
+        <div class="mt-5 max-w-4xl space-y-4 text-stone-700">
+          <p>Vous êtes informé de la collecte de données à caractère personnel par flocage-lorraine.com.</p>
+          <p>
+            La finalité de ces traitements est la communication et l’information externe de flocage-lorraine.com.
+          </p>
+          <p>
+            Ces données sont fondées sur l’intérêt légitime du responsable de traitement, conformément à l’article 6-1-f
+            du règlement européen du 27 avril 2016.
+          </p>
+          <p>
+            Des cookies sont susceptibles d’être implantés sur votre poste client, ayant pour finalités de faciliter la
+            connexion au site internet, la mesure d’audience, et des cookies de réseaux sociaux (tel que Facebook) sans
+            recoupement avec d’autres traitements tels que le fichier client. La durée de conservation de ces données est
+            au maximum de 13 mois.
+          </p>
+          <p>
+            Vous bénéficiez d’un droit d’accès, de rectification ou d’effacement ou d’opposition que vous pouvez exercer
+            auprès de flocage-lorraine.com aux coordonnées ci-avant indiquées ou par mail à
+            <a href="mailto:contact@flocage-lorraine.com" class="font-semibold text-brand-700 underline underline-offset-2"
+              >contact@flocage-lorraine.com</a
+            >, outre un droit de réclamation auprès de la CNIL située Place de Fontenoy - TSA - 75334 PARIS CEDEX 07.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

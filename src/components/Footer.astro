@@ -1,0 +1,79 @@
+---
+import { site } from '../data/site';
+import { services, serviceHref } from '../data/services';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+const linkClass = 'transition hover:text-white';
+---
+
+<footer class="bg-stone-950 text-stone-400">
+  <div class="container-page grid gap-12 py-16 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-4">
+      <a href="/" class="inline-block font-display text-5xl leading-none font-bold tracking-tight text-white italic">
+        <span class="text-brand-500">C</span>PROJECT’
+      </a>
+      <p class="mt-3 font-display text-lg font-semibold tracking-[0.18em] text-stone-200 uppercase">
+        Faites le choix de l’expertise
+      </p>
+      <p class="mt-6 max-w-xl text-sm leading-relaxed">
+        CPROJECT, entreprise RGE Qualibat agréée Placo, propose ses services et son savoir-faire aux professionnels et aux
+        particuliers pour tous travaux de flocage fibreux, flocage pâteux, Aeroblue, plâtre projeté, protection feu,
+        travaux de plâtrerie et isolation, isolation projetée (isolation par projection, isolation par insufflation,
+        isolation par soufflage) dans les départements des Vosges 88, Meurthe-et-Moselle 54, Moselle 57, Meuse 55,
+        Ardennes 08, Marne 51, Aube 10, Côte-d’Or 21, Haute-Marne 52, Haute-Saône 70, Haut-Rhin 68, Bas-Rhin 67.
+      </p>
+    </div>
+
+    <nav aria-label="Prestations" class="lg:col-span-3">
+      <h2 class="font-display text-lg font-semibold tracking-[0.18em] text-white uppercase">Prestations</h2>
+      <ul class="mt-5 space-y-2.5">
+        {
+          services.map((service) => (
+            <li>
+              <a href={serviceHref(service)} class={linkClass}>
+                {service.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav aria-label="Le site" class="lg:col-span-2">
+      <h2 class="font-display text-lg font-semibold tracking-[0.18em] text-white uppercase">Le site</h2>
+      <ul class="mt-5 space-y-2.5">
+        <li><a href="/" class={linkClass}>Accueil</a></li>
+        <li><a href="/realisation-lorraine/" class={linkClass}>Nos réalisations</a></li>
+        <li><a href="/contact/" class={linkClass}>Contact</a></li>
+        <li><a href="/DOCUMENTATION.pdf" target="_blank" rel="noopener" class={linkClass}>Documentation (PDF)</a></li>
+        <li><a href="/infos-legales/" class={linkClass}>Infos légales</a></li>
+      </ul>
+    </nav>
+
+    <div class="lg:col-span-3">
+      <h2 class="font-display text-lg font-semibold tracking-[0.18em] text-white uppercase">Contact</h2>
+      <ul class="mt-5 space-y-3.5">
+        <li class="flex gap-3">
+          <Icon name="map-pin" class="mt-1 size-4 shrink-0 text-brand-400" />
+          <span>{site.address.street}<br />{site.address.postalCode} {site.address.city}</span>
+        </li>
+        <li class="flex gap-3">
+          <Icon name="phone" class="mt-1 size-4 shrink-0 text-brand-400" />
+          <a href={site.phoneHref} class={`whitespace-nowrap ${linkClass}`}>{site.phone}</a>
+        </li>
+        <li class="flex gap-3">
+          <Icon name="mail" class="mt-1 size-4 shrink-0 text-brand-400" />
+          <a href={`mailto:${site.email}`} class={`break-words ${linkClass}`}>{site.email}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-page flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-sm">
+      <p>© {year} {site.name} – Tous droits réservés</p>
+      <a href="/infos-legales/" class={linkClass}>Infos légales</a>
+    </div>
+  </div>
+</footer>

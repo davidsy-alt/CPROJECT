@@ -1,0 +1,34 @@
+---
+/** En-tête sombre des pages intérieures : fil d'Ariane, libellé, titre et contenu libre (slot). */
+interface Props {
+  /** Libellé court de la page (fil d'Ariane et petit libellé au-dessus du titre). */
+  label: string;
+  title: string;
+}
+
+const { label, title } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden bg-stone-950 text-white">
+  <div class="texture-dark absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[30%] lg:block" aria-hidden="true">
+    <span class="absolute -inset-y-4 right-[58%] w-3 -skew-x-[20deg] bg-brand-600 opacity-70"></span>
+    <span class="absolute -inset-y-4 right-[30%] w-24 -skew-x-[20deg] bg-brand-600"></span>
+    <span class="absolute -inset-y-4 right-[6%] w-14 -skew-x-[20deg] bg-brand-600 opacity-30"></span>
+  </div>
+
+  <div class="container-page py-12 sm:py-16 lg:py-20">
+    <nav aria-label="Fil d’Ariane" class="text-sm text-stone-400">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="/" class="transition hover:text-white">Accueil</a></li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page" class="text-stone-200">{label}</li>
+      </ol>
+    </nav>
+    <div class="max-w-3xl">
+      <p class="eyebrow mt-8 text-brand-400">{label}</p>
+      <h1 class="mt-4 text-4xl leading-[0.98] font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">{title}</h1>
+      <slot />
+    </div>
+  </div>
+</section>

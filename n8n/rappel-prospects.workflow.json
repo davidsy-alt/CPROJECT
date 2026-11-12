@@ -1,0 +1,917 @@
+{
+  "name": "CPROJECT – Rappel des prospects du site",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "sender": "c.project@orange.fr"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "eeabdadf-f008-4e12-affa-17c542044fc6",
+      "name": "Nouveau mail du site"
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cproject-rappel",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        220
+      ],
+      "id": "226fd948-d440-4596-a4d5-0f453572fed8",
+      "name": "Clic sur un créneau",
+      "webhookId": "d9fb56cb-7c0f-483f-a6c3-e7e0907a34fd"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cproject-rappel",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        440
+      ],
+      "id": "89a65187-92cb-4901-a74b-5ba4a5fbbe25",
+      "name": "Validation du rappel",
+      "webhookId": "93c27942-306f-4ce3-a995-ef1cf8ac3734"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d2011fff-b8e1-45fe-adea-a08e01f0238c",
+              "name": "creneaux",
+              "value": "11:30-11:45, 11:45-12:00, 17:15-17:30, 17:30-18:00",
+              "type": "string"
+            },
+            {
+              "id": "411b5406-e1f0-4197-a5df-5946faa86342",
+              "name": "jours",
+              "value": "lundi, mardi, mercredi, jeudi, vendredi",
+              "type": "string"
+            },
+            {
+              "id": "8dc02382-b7a7-480b-ad49-e1ce24c9ec87",
+              "name": "jours_fermes",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6737eccc-79e3-40bd-a595-87255ec50b25",
+              "name": "jours_feries_fermes",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "65e0504e-4b27-46c8-a5cb-9c2d78d01770",
+              "name": "heures_proposees",
+              "value": 48,
+              "type": "number"
+            },
+            {
+              "id": "efee7204-2fea-4dcc-a1f2-92303ca77a3f",
+              "name": "delai_minimum_minutes",
+              "value": 60,
+              "type": "number"
+            },
+            {
+              "id": "2c95cdac-524e-426a-a4c9-f964ced31d50",
+              "name": "question_1",
+              "value": "Q1",
+              "type": "string"
+            },
+            {
+              "id": "3e94e6f9-5a8e-43ba-a65e-c3abf2c30847",
+              "name": "reponses_1",
+              "value": "A ; B ; C",
+              "type": "string"
+            },
+            {
+              "id": "9aae628a-0071-4f22-a51b-53f8d68fee3f",
+              "name": "question_2",
+              "value": "Q2",
+              "type": "string"
+            },
+            {
+              "id": "07f44306-0801-4081-a601-6be1a1210941",
+              "name": "reponses_2",
+              "value": "A ; B ; C",
+              "type": "string"
+            },
+            {
+              "id": "0bbe9ea7-9bcb-46e3-aae1-5a9438b890c9",
+              "name": "question_3",
+              "value": "Q3",
+              "type": "string"
+            },
+            {
+              "id": "081d3b7d-0f73-48c8-a95f-e613d69d70e7",
+              "name": "reponses_3",
+              "value": "A ; B ; C",
+              "type": "string"
+            },
+            {
+              "id": "ebc6cc6e-7e19-472b-a795-1fb15b8770e1",
+              "name": "questions_obligatoires",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "4a4bf1c5-cffc-4dfa-a67d-76465b1995bb",
+              "name": "entreprise",
+              "value": "CPROJECT’",
+              "type": "string"
+            },
+            {
+              "id": "0ed9755d-3e64-4e58-a36e-d812a9fbf12c",
+              "name": "telephone_entreprise",
+              "value": "03 29 38 06 17",
+              "type": "string"
+            },
+            {
+              "id": "0d56331a-c6ee-471c-aa6e-34303f2ae0fd",
+              "name": "adresse_entreprise",
+              "value": "ZA du Pâtis des Saules, 88450 Vincey",
+              "type": "string"
+            },
+            {
+              "id": "0f7ce4cb-5fc6-4d77-a540-c1bbaae2c2ec",
+              "name": "email_reponse",
+              "value": "c.project@orange.fr",
+              "type": "string"
+            },
+            {
+              "id": "82379b85-2d18-4ab7-aa72-fbf876063e96",
+              "name": "email_objet",
+              "value": "Votre demande à CPROJECT’ : choisissez votre créneau de rappel",
+              "type": "string"
+            },
+            {
+              "id": "3656addc-d137-40fa-a6e8-ab8e68a20442",
+              "name": "email_intro",
+              "value": "Nous avons bien reçu votre demande et nous vous en remercions. Pour en parler de vive voix, choisissez ci-dessous le créneau qui vous convient : nous vous rappelons à ce moment-là.",
+              "type": "string"
+            },
+            {
+              "id": "f44c7232-566e-4e80-a873-67366ff2d2e9",
+              "name": "couleur",
+              "value": "#c53535",
+              "type": "string"
+            },
+            {
+              "id": "b71b0b3f-d2e0-4366-afdf-fa0dfadd648f",
+              "name": "adresses_internes",
+              "value": "c.project@orange.fr",
+              "type": "string"
+            },
+            {
+              "id": "a8de332b-f658-4c2a-a234-4cfd106e1db7",
+              "name": "lien_rappel",
+              "value": "https://n8n.srv1430608.hstgr.cloud/webhook/cproject-rappel",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        220
+      ],
+      "id": "1569d381-081b-4464-ab0f-079e42b4a0a5",
+      "name": "Réglages"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "bfae44ae-35c7-4c16-afb1-2dc2bfe3de1f",
+                    "leftValue": "={{ $('Nouveau mail du site').isExecuted }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Nouvelle demande (mail)"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ff62a3f4-505d-4f0f-a5a0-1fdf9b858c30",
+                    "leftValue": "={{ String($json.query?.ref ?? $json.body?.ref ?? '') }}",
+                    "rightValue": "^[0-9a-f]{10,32}$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Clic du prospect"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Lien incomplet"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        500,
+        220
+      ],
+      "id": "18290ecc-3b41-4e57-a470-05dd9c8295d7",
+      "name": "Mail ou clic ?"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "get",
+        "messageId": "={{ $json.query?.ref ?? $json.body?.ref }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        740,
+        420
+      ],
+      "id": "ac461dab-69b0-4b7a-a584-250a0cd7a901",
+      "name": "Retrouver la demande",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lit le mail envoyé par le formulaire du site et en tire les coordonnées du prospect.\n// Le mail vient soit du déclencheur (nouvelle demande), soit de « Retrouver la demande »\n// (le prospect a cliqué sur un créneau : on relit sa demande dans Gmail).\n// On cherche d'abord les lignes « Nom : … », « Téléphone : … », « Email : … » puis, à défaut,\n// le premier numéro et la première adresse trouvés dans le texte.\n\nconst reglages = $('Réglages').first().json;\n\nconst chiffres = (v) => String(v ?? '').replace(/\\D/g, '');\nconst propre = (v, max = 80) => String(v ?? '').replace(/\\s+/g, ' ').trim().slice(0, max);\nconst liste = (v) => String(v ?? '').toLowerCase().split(/[\\s,;]+/).filter(Boolean);\n\n// Adresses qui ne sont jamais celles du prospect (la boîte de l'entreprise).\nconst internes = liste(reglages.adresses_internes);\n// Numéro de l'entreprise, écrit 0XXXXXXXXX, pour ne pas le prendre pour celui du prospect.\nconst national = (v) => chiffres(v).replace(/^(?:0033|33)(?=\\d{9}$)/, '0');\nconst telephoneEntreprise = national(reglages.telephone_entreprise);\n\nconst ADRESSE = /[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}/gi;\nconst ADRESSE_SEULE = /^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$/i;\nconst TELEPHONE_FR = /(?:(?:\\+|00)33[\\s.-]?(?:\\(0\\)[\\s.-]?)?|0)[1-9](?:[\\s.-]?\\d{2}){4}/g;\n\nconst ENTITES = {\n  nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '\"', apos: \"'\", rsquo: '’', lsquo: '‘', laquo: '«', raquo: '»',\n  euro: '€', deg: '°', eacute: 'é', egrave: 'è', ecirc: 'ê', euml: 'ë', agrave: 'à', acirc: 'â', ccedil: 'ç',\n  ugrave: 'ù', ucirc: 'û', ocirc: 'ô', icirc: 'î', iuml: 'ï', oelig: 'œ',\n};\nconst MAJUSCULES = { Eacute: 'É', Egrave: 'È', Ecirc: 'Ê', Agrave: 'À', Ccedil: 'Ç' };\n\nfunction decoder(texte) {\n  const caractere = (n) => (n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : '');\n  return texte\n    .replace(/&#(\\d{1,7});/g, (_, n) => caractere(Number(n)))\n    .replace(/&#x([0-9a-f]{1,6});/gi, (_, n) => caractere(parseInt(n, 16)))\n    .replace(/&([a-z]+);/gi, (tout, nom) => MAJUSCULES[nom] ?? ENTITES[nom.toLowerCase()] ?? tout);\n}\n\n/** Texte du mail : la version texte si elle existe, sinon la version HTML débarrassée de ses balises. */\nfunction texteDe(mail) {\n  let texte = typeof mail.text === 'string' ? mail.text : '';\n  if (!texte.trim()) {\n    const html = [mail.html, mail.textAsHtml].find((v) => typeof v === 'string' && v.trim()) ?? '';\n    texte = html\n      .replace(/<(style|script|head)\\b[\\s\\S]*?<\\/\\1>/gi, ' ')\n      .replace(/<br\\s*\\/?>|<\\/(?:p|div|tr|li|h[1-6]|table)>/gi, '\\n')\n      .replace(/<\\/t[dh]>/gi, '\\t')\n      .replace(/<[^>]+>/g, ' ');\n  }\n  if (!texte.trim() && typeof mail.snippet === 'string') texte = mail.snippet;\n  return decoder(texte)\n    .replace(/\\r\\n?/g, '\\n')\n    .replace(/ /g, ' ')\n    .replace(/[ \\t]+\\n/g, '\\n')\n    .replace(/\\n[ \\t]+/g, '\\n')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .trim();\n}\n\n/** Adresses d'un champ d'en-tête, quelle que soit sa forme (objet { value: [...] } ou texte). */\nfunction adressesDe(champ) {\n  if (!champ) return [];\n  if (typeof champ === 'string') return (champ.match(ADRESSE) ?? []).map((a) => a.toLowerCase());\n  if (Array.isArray(champ)) return champ.flatMap(adressesDe);\n  if (Array.isArray(champ.value)) return champ.value.map((v) => String(v.address ?? '').toLowerCase()).filter(Boolean);\n  if (typeof champ.address === 'string') return [champ.address.toLowerCase()];\n  if (typeof champ.text === 'string') return adressesDe(champ.text);\n  return [];\n}\n\n/** Valeur d'une ligne « Étiquette : valeur » (ou étiquette suivie d'une tabulation / d'un retour à la ligne). */\nfunction champ(texte, etiquettes) {\n  for (const etiquette of etiquettes) {\n    const motif = new RegExp(\n      `(?:^|\\\\n)[ \\\\t>*•·-]*(?:${etiquette})[ \\\\t]*(?:[:=][ \\\\t]*|\\\\t+[ \\\\t]*|[ ]{2,}|\\\\n)([^\\\\n]+)`,\n      'iu',\n    );\n    const valeur = motif.exec(texte)?.[1]?.trim() ?? '';\n    // Une valeur qui ressemble elle-même à « Étiquette : » veut dire que le champ était vide.\n    if (valeur && !/^[\\p{L} '’-]{2,25}[ \\t]*[:=]/u.test(valeur)) return valeur;\n  }\n  return '';\n}\n\nfunction lire(mail) {\n  const texte = texteDe(mail);\n  const entetes = mail.headers ?? {};\n\n  // --- Adresse e-mail du prospect : « Répondre à », puis ligne « Email : … », puis première adresse du texte.\n  const exclues = new Set([...internes, ...adressesDe(mail.from ?? mail.From), ...adressesDe(mail.to ?? mail.To)]);\n  const candidates = [\n    ...adressesDe(mail.replyTo ?? entetes['reply-to']),\n    ...adressesDe(champ(texte, ['Adresse e-?mail', 'E-?mail', 'Courriel', 'Mail'])),\n    ...adressesDe(texte),\n  ];\n  const email = candidates.find((a) => ADRESSE_SEULE.test(a) && !exclues.has(a)) ?? '';\n\n  // --- Téléphone : ligne « Téléphone : … », puis premier numéro français du texte (hors numéro de l'entreprise).\n  const numeros = [\n    champ(texte, ['T[ée]l[ée]phone(?: portable| mobile)?', 'T[ée]l\\\\.?', 'Portable', 'Mobile', 'Phone']),\n    ...(texte.match(TELEPHONE_FR) ?? []),\n  ]\n    .map((n) => propre(String(n).match(/[+\\d][\\d\\s.()-]{6,22}\\d/)?.[0] ?? '', 25))\n    .filter((n) => chiffres(n).length >= 8 && national(n) !== telephoneEntreprise);\n  const telephone = numeros[0] ?? '';\n\n  // --- Nom : « Prénom » + « Nom », à défaut le nom affiché dans « Répondre à ».\n  const sansSymbole = (v) => (/[@\\d]/.test(v) ? '' : propre(v, 60));\n  const prenom = sansSymbole(champ(texte, ['Pr[ée]nom']));\n  const nomSeul = sansSymbole(champ(texte, ['Nom et pr[ée]nom', 'Nom', 'Name']));\n  const nomReponse = sansSymbole(mail.replyTo?.value?.[0]?.name ?? '');\n  const nom = [prenom, nomSeul].filter(Boolean).join(' ') || nomReponse;\n\n  // --- Date de réception.\n  const date = [mail.date, Number(mail.internalDate)].map((v) => new Date(v)).find((d) => v_valide(d));\n\n  return {\n    ref: String(mail.id ?? ''),\n    sujet: propre(mail.subject ?? mail.Subject, 150),\n    recu_le: date ? date.toISOString() : null,\n    nom,\n    telephone,\n    email,\n    texte: texte.slice(0, 3000),\n  };\n}\n\nfunction v_valide(date) {\n  return date instanceof Date && !Number.isNaN(date.getTime()) && date.getTime() > 0;\n}\n\nreturn $input.all().map((item, index) => ({ json: lire(item.json ?? {}), pairedItem: { item: index } }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        40
+      ],
+      "id": "6dd4da5c-4558-4d7c-ac57-3c9276c1eac2",
+      "name": "Lire la demande"
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": "primary",
+          "cachedResultName": "Agenda principal du compte connecté"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now }}",
+        "timeMax": "={{ $now.plus({ days: 32 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1220,
+        40
+      ],
+      "id": "af2f379f-74b4-4357-ae8f-c14eee6e2363",
+      "name": "Agenda : créneaux occupés",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcule les créneaux de rappel proposables (réglages + agenda) et décide de la suite :\n//  - une demande arrive par mail        → e-mail avec les boutons de créneaux ;\n//  - le prospect clique sur un créneau  → page (questions, autres créneaux ou message) ;\n//  - le prospect valide la page         → rappel à ajouter dans l'agenda.\n// Les horaires, jours et questions se modifient dans le node « Réglages », pas ici.\n\nconst R = $('Réglages').first().json;\nconst ZONE = 'Europe/Paris';\nconst maintenant = DateTime.now().setZone(ZONE);\n\nconst JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];\nconst MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];\n\nconst deux = (n) => String(n).padStart(2, '0');\nconst sansAccent = (v) => String(v ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();\nconst chiffres = (v) => String(v ?? '').replace(/\\D/g, '');\nconst vide = (v) => v === undefined || v === null || String(v).trim() === '';\nconst nombre = (v, defaut) => (!vide(v) && Number.isFinite(Number(v)) ? Number(v) : defaut);\nconst vrai = (v, defaut) => (vide(v) ? defaut : !(v === false || /^(false|faux|non|0)$/i.test(String(v).trim())));\nconst un = (v) => (Array.isArray(v) ? v[0] : v);\nconst echapper = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst heure = (d) => `${d.hour}h${deux(d.minute)}`;\nconst libelleJour = (d) => `${JOURS[d.weekday - 1]} ${d.day === 1 ? '1er' : d.day} ${MOIS[d.month - 1]}`;\n\n// ---------------------------------------------------------------- Lecture des réglages\n\n/** « 11:30-11:45, 17:30-18:00 » (ou 11h30-11h45) → horaires de la journée, dans l'ordre. */\nfunction lireCreneaux(texte) {\n  const horaires = new Map();\n  const motif = /(\\d{1,2})\\s*[h:]\\s*(\\d{2})?\\s*(?:-|–|—|à|a|>)\\s*(\\d{1,2})\\s*[h:]\\s*(\\d{2})?/gi;\n  for (const r of String(texte ?? '').matchAll(motif)) {\n    const [h1, m1, h2, m2] = [r[1], r[2] ?? 0, r[3], r[4] ?? 0].map(Number);\n    if (h1 < 24 && h2 < 24 && m1 < 60 && m2 < 60 && h2 * 60 + m2 > h1 * 60 + m1) {\n      const code = `${deux(h1)}${deux(m1)}-${deux(h2)}${deux(m2)}`;\n      horaires.set(code, { h1, m1, h2, m2, code });\n    }\n  }\n  return [...horaires.values()].sort((a, b) => a.h1 * 60 + a.m1 - (b.h1 * 60 + b.m1));\n}\n\n/** « lundi, mardi » ou « lundi au vendredi » → numéros de jours (1 = lundi … 7 = dimanche). */\nfunction lireJours(texte) {\n  const mots = sansAccent(texte).replace(/([a-z])\\s*[-–—]\\s*([a-z])/g, '$1 au $2').split(/[^a-z]+/).filter(Boolean);\n  const rang = (mot) => (mot && mot.length >= 3 ? JOURS.findIndex((j) => j.startsWith(mot.slice(0, 3))) : -1);\n  const trouves = new Set();\n  for (let i = 0; i < mots.length; i++) {\n    const debut = rang(mots[i]);\n    if (debut < 0) continue;\n    const fin = ['au', 'a'].includes(mots[i + 1]) ? rang(mots[i + 2]) : -1;\n    if (fin < 0) {\n      trouves.add(debut + 1);\n      continue;\n    }\n    for (let k = debut; ; k = (k + 1) % 7) {\n      trouves.add(k + 1);\n      if (k === fin) break;\n    }\n    i += 2;\n  }\n  return trouves.size ? [...trouves].sort() : [1, 2, 3, 4, 5];\n}\n\n/** « 24/12/2026, 31/12/2026 » ou une période « 24/12/2026 au 02/01/2027 » → dates fermées (AAAA-MM-JJ). */\nfunction lireDates(texte) {\n  const source = String(texte ?? '');\n  const dates = [];\n  for (const r of source.matchAll(/(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4}|\\d{2})|(\\d{4})-(\\d{2})-(\\d{2})/g)) {\n    const date = r[4]\n      ? DateTime.fromObject({ year: +r[4], month: +r[5], day: +r[6] }, { zone: ZONE })\n      : DateTime.fromObject({ year: r[3].length === 2 ? 2000 + +r[3] : +r[3], month: +r[2], day: +r[1] }, { zone: ZONE });\n    if (date.isValid) dates.push({ date, debut: r.index, fin: r.index + r[0].length });\n  }\n  const fermees = new Set();\n  for (let i = 0; i < dates.length; i++) {\n    const { date, fin } = dates[i];\n    const suivante = dates[i + 1];\n    const entre = suivante ? sansAccent(source.slice(fin, suivante.debut)).trim() : '';\n    const periode = suivante && /^(-|–|—|>|au|a)$/.test(entre) && suivante.date >= date && suivante.date.diff(date, 'days').days <= 366;\n    if (!periode) {\n      fermees.add(date.toISODate());\n      continue;\n    }\n    for (let jour = date; jour <= suivante.date; jour = jour.plus({ days: 1 })) fermees.add(jour.toISODate());\n    i++;\n  }\n  return fermees;\n}\n\n/** Jours fériés français d'une année (dates fixes + lundi de Pâques, Ascension, lundi de Pentecôte). */\nfunction joursFeries(annee) {\n  const a = annee % 19;\n  const b = Math.floor(annee / 100);\n  const c = annee % 100;\n  const d = Math.floor(b / 4);\n  const e = b % 4;\n  const f = Math.floor((b + 8) / 25);\n  const g = Math.floor((b - f + 1) / 3);\n  const h = (19 * a + b - d - g + 15) % 30;\n  const i = Math.floor(c / 4);\n  const k = c % 4;\n  const l = (32 + 2 * e + 2 * i - h - k) % 7;\n  const m = Math.floor((a + 11 * h + 22 * l) / 451);\n  const paques = DateTime.fromObject(\n    { year: annee, month: Math.floor((h + l - 7 * m + 114) / 31), day: ((h + l - 7 * m + 114) % 31) + 1 },\n    { zone: ZONE },\n  );\n  const fixes = ['01-01', '05-01', '05-08', '07-14', '08-15', '11-01', '11-11', '12-25'].map((jour) => `${annee}-${jour}`);\n  return new Set([...fixes, ...[1, 39, 50].map((n) => paques.plus({ days: n }).toISODate())]);\n}\n\nconst horairesDuJour = lireCreneaux(R.creneaux);\nif (!horairesDuJour.length) {\n  throw new Error('Réglages : aucun horaire lisible dans « creneaux » (exemple : 11:30-11:45, 17:30-17:45).');\n}\nconst joursOuverts = lireJours(R.jours);\nconst joursFermes = lireDates(R.jours_fermes);\nconst feriesFermes = vrai(R.jours_feries_fermes, true);\nconst heuresProposees = Math.max(1, nombre(R.heures_proposees, 48));\nconst delaiMinimum = Math.max(0, nombre(R.delai_minimum_minutes, 60));\nconst questionsObligatoires = vrai(R.questions_obligatoires, true);\n\n// Questions de la page : question_1 / reponses_1, question_2 / reponses_2… (réponses séparées par « ; »).\nconst questions = [];\nfor (let n = 1; n <= 9; n++) {\n  const titre = String(R[`question_${n}`] ?? '').trim();\n  const reponses = String(R[`reponses_${n}`] ?? '').split(';').map((r) => r.trim()).filter(Boolean);\n  if (titre && reponses.length >= 2) questions.push({ id: `q${n}`, titre, reponses });\n}\n\n// ---------------------------------------------------------------- Créneaux proposables\n\nconst feries = new Map();\nfunction estOuvert(jour) {\n  if (!joursOuverts.includes(jour.weekday) || joursFermes.has(jour.toISODate())) return false;\n  if (!feriesFermes) return true;\n  if (!feries.has(jour.year)) feries.set(jour.year, joursFeries(jour.year));\n  return !feries.get(jour.year).has(jour.toISODate());\n}\n\nfunction creneau(debut, fin) {\n  return {\n    code: `${debut.toFormat('yyyyLLdd')}-${debut.toFormat('HHmm')}-${fin.toFormat('HHmm')}`,\n    debut: debut.toISO(),\n    fin: fin.toISO(),\n    jour: libelleJour(debut),\n    de: heure(debut),\n    a: heure(fin),\n  };\n}\n\n/** Créneaux des prochaines heures ouvrées : les jours fermés ne comptent pas dans le délai. */\nfunction creneauxProposes(heures) {\n  const auPlusTot = maintenant.plus({ minutes: delaiMinimum });\n  let limite = maintenant.plus({ hours: heures });\n  const liste = [];\n  let jour = maintenant.startOf('day');\n  // 31 jours au plus : c'est aussi la période d'agenda lue par « Agenda : créneaux occupés ».\n  for (let n = 0; n < 31 && jour <= limite; n++) {\n    const lendemain = jour.plus({ days: 1 });\n    if (!estOuvert(jour)) {\n      limite = limite.plus(lendemain.diff(jour < maintenant ? maintenant : jour));\n    } else {\n      for (const h of horairesDuJour) {\n        const debut = jour.set({ hour: h.h1, minute: h.m1 });\n        if (debut >= auPlusTot && debut <= limite) liste.push(creneau(debut, jour.set({ hour: h.h2, minute: h.m2 })));\n      }\n    }\n    jour = lendemain;\n  }\n  return liste;\n}\n\n// ---------------------------------------------------------------- Agenda : ce qui est déjà pris\n\nconst refDe = (evenement) => /Réf\\. demande : ([0-9a-f]{10,32})/i.exec(String(evenement.description ?? ''))?.[1] ?? '';\n\n/** Période occupée par un événement de l'agenda ; rien si l'événement ne bloque pas (annulé, « disponible », refusé). */\nfunction periode(evenement) {\n  if (evenement.status === 'cancelled' || evenement.transparency === 'transparent') return null;\n  if (Array.isArray(evenement.attendees) && evenement.attendees.some((p) => p.self && p.responseStatus === 'declined')) return null;\n  const instant = (borne) => {\n    if (borne?.dateTime) return DateTime.fromISO(borne.dateTime, { setZone: true });\n    if (borne?.date) return DateTime.fromISO(borne.date, { zone: ZONE });\n    return null;\n  };\n  const debut = instant(evenement.start);\n  const fin = instant(evenement.end);\n  if (!debut?.isValid || !fin?.isValid) return null;\n  return { debut, fin, ref: refDe(evenement) };\n}\n\nconst evenements = $input.all().map((item) => item.json ?? {});\nconst erreurAgenda = evenements.find((e) => e.error !== undefined && e.id === undefined)?.error;\nconst dejaVus = new Set();\nconst periodes = [];\nfor (const evenement of evenements) {\n  if (!evenement.id || dejaVus.has(evenement.id)) continue;\n  dejaVus.add(evenement.id);\n  const occupee = periode(evenement);\n  if (occupee) periodes.push(occupee);\n}\n\nconst estPris = (c) => periodes.some((p) => p.debut < DateTime.fromISO(c.fin) && p.fin > DateTime.fromISO(c.debut));\n\n// Si tout est pris sur la période prévue, on regarde un jour plus loin, jusqu'à trouver un créneau libre.\nlet proposes = [];\nlet libres = [];\nfor (let heures = heuresProposees; !libres.length && heures <= heuresProposees + 24 * 21; heures += 24) {\n  proposes = creneauxProposes(heures);\n  libres = proposes.filter((c) => !estPris(c));\n}\n\n/** Créneaux regroupés par jour, avec le lien à cliquer. */\nfunction parJour(creneaux, ref) {\n  const jours = [];\n  for (const c of creneaux) {\n    if (jours.at(-1)?.titre !== c.jour) jours.push({ titre: c.jour, creneaux: [] });\n    jours.at(-1).creneaux.push({ ...c, lien: lienVers(ref, c.code) });\n  }\n  return jours;\n}\n\nconst lienVers = (ref, code) => `${String(R.lien_rappel ?? '').trim()}?ref=${encodeURIComponent(ref)}${code ? `&c=${code}` : ''}`;\n\n// ---------------------------------------------------------------- Cas 1 : demande arrivée par mail\n\nconst demandes = $('Lire la demande').all().map((item) => item.json);\n\nif ($('Nouveau mail du site').isExecuted) {\n  if (erreurAgenda) {\n    throw new Error(`Agenda Google inaccessible : ${erreurAgenda}. Vérifier la connexion du compte dans les nodes « Agenda ».`);\n  }\n  return demandes.map((demande) =>\n    demande.email\n      ? { json: { action: 'envoyer', demande, jours: parJour(libres, demande.ref), lien_creneaux: lienVers(demande.ref) } }\n      : { json: { action: 'sans_email', demande } },\n  );\n}\n\n// ---------------------------------------------------------------- Cas 2 et 3 : clic sur un créneau, validation de la page\n\nconst validation = $('Validation du rappel').isExecuted;\nconst parametres = (validation ? R.body : R.query) ?? {};\nconst demande = demandes[0] ?? {};\nconst prospect = { ref: demande.ref, nom: demande.nom, telephone: demande.telephone, email: demande.email };\nconst page = (ecran, contenu = {}) => [{ json: { action: 'page', ecran, demande: prospect, ...contenu } }];\n\nif (!demande.ref) return page('message', { code: 'lien_invalide' });\n// Agenda illisible : le prospect voit une page d'excuse et l'exécution est signalée en erreur.\nif (erreurAgenda) return [{ json: { action: 'erreur', detail: String(erreurAgenda), demande: prospect } }];\n\n// Un seul rappel par demande : si le prospect en a déjà un à venir, on le lui rappelle.\nconst mien = periodes.find((p) => p.ref === demande.ref && p.fin > maintenant);\nif (mien) {\n  const debut = mien.debut.setZone(ZONE);\n  const fin = mien.fin.setZone(ZONE);\n  return page('message', { code: 'deja_reserve', rappel: { jour: libelleJour(debut), de: heure(debut), a: heure(fin) } });\n}\n\nconst code = String(un(parametres.c) ?? '').trim();\nconst autres = { jours: parJour(libres, demande.ref) };\nif (!code) return page('creneaux', autres);\n\nconst choisi = proposes.find((c) => c.code === code);\nif (!choisi) return page('creneaux', { avis: 'indisponible', ...autres });\nif (estPris(choisi)) return page('creneaux', { avis: 'pris', ...autres });\n\n// Saisie de la page : numéro à rappeler et réponses (numéro de la réponse choisie, ou null).\nconst telephone = validation\n  ? String(un(parametres.tel) ?? '').replace(/[^\\d+ ().-]/g, '').replace(/\\s+/g, ' ').trim().slice(0, 30)\n  : String(demande.telephone ?? '');\nconst reponses = questions.map((q) => {\n  const choix = String(un(parametres[q.id]) ?? '').trim();\n  return /^\\d$/.test(choix) && Number(choix) < q.reponses.length ? Number(choix) : null;\n});\nconst formulaire = {\n  creneau: choisi,\n  questions,\n  obligatoires: questionsObligatoires,\n  saisie: { telephone, reponses },\n  lien_formulaire: String(R.lien_rappel ?? '').trim(),\n  lien_creneaux: lienVers(demande.ref),\n};\n\nif (!validation) return page('questions', formulaire);\n\nconst erreurs = [];\nif (chiffres(telephone).length < 8) erreurs.push('telephone');\nif (questionsObligatoires && reponses.includes(null)) erreurs.push('questions');\nif (erreurs.length) return page('questions', { ...formulaire, erreurs });\n\n// Tout est bon : contenu de l'événement à créer dans l'agenda.\nconst recu = demande.recu_le ? DateTime.fromISO(demande.recu_le).setZone(ZONE) : null;\nconst description = [\n  'Rappel demandé depuis le site internet.',\n  '',\n  `Téléphone : ${echapper(telephone)}`,\n  demande.nom ? `Nom : ${echapper(demande.nom)}` : null,\n  demande.email ? `E-mail : ${echapper(demande.email)}` : null,\n  '',\n  ...questions.map((q, i) => `${echapper(q.titre)} → ${reponses[i] === null ? '(sans réponse)' : echapper(q.reponses[reponses[i]])}`),\n  questions.length ? '' : null,\n  `Demande reçue${recu?.isValid ? ` le ${recu.toFormat('dd/LL/yyyy')} à ${heure(recu)}` : ''} :`,\n  echapper(demande.texte) || '(texte de la demande introuvable)',\n  '',\n  `Réf. demande : ${demande.ref}`,\n]\n  .filter((ligne) => ligne !== null)\n  .join('\\n');\n\nreturn [\n  {\n    json: {\n      action: 'reserver',\n      debut: choisi.debut,\n      fin: choisi.fin,\n      titre: `📞 Rappeler ${demande.nom || demande.email || 'un prospect du site'} – ${telephone}`,\n      description,\n      rappel: { jour: choisi.jour, de: choisi.de, a: choisi.a },\n      telephone,\n      demande: prospect,\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        40
+      ],
+      "id": "60839d9f-2675-4616-a81b-a1f5e6d2c2bc",
+      "name": "Créneaux et décision"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Met en forme ce que « Créneaux et décision » a décidé : l'e-mail avec les boutons de créneaux,\n// ou la page affichée au prospect (questions, autres créneaux, confirmation, message).\n// Les textes de l'e-mail et le nom de l'entreprise viennent du node « Réglages ».\n\nconst R = $('Réglages').first().json;\n\nconst e = (v) =>\n  String(v ?? '')\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;')\n    .replace(/\"/g, '&quot;')\n    .replace(/'/g, '&#39;');\nconst majuscule = (texte) => texte.charAt(0).toUpperCase() + texte.slice(1);\nconst paragraphes = (texte) => e(String(texte ?? '').trim()).replace(/\\n/g, '<br>');\n\nconst COULEUR = /^#[0-9a-f]{6}$/i.test(String(R.couleur ?? '').trim()) ? String(R.couleur).trim() : '#c53535';\nconst ENTREPRISE = e(R.entreprise || 'Notre entreprise');\nconst TELEPHONE = e(R.telephone_entreprise);\nconst APPEL = `tel:${String(R.telephone_entreprise ?? '').replace(/[^\\d+]/g, '')}`;\nconst appelezNous = TELEPHONE ? `appelez-nous au <a href=\"${APPEL}\">${TELEPHONE}</a>` : 'contactez-nous';\n\n// ---------------------------------------------------------------- E-mail envoyé au prospect\n\n// Dans l'e-mail, les styles sont écrits sur chaque balise (les messageries ignorent les feuilles de style).\nconst appelEmail = TELEPHONE\n  ? `appelez-nous au <a href=\"${APPEL}\" style=\"color:${COULEUR};white-space:nowrap;\">${TELEPHONE}</a>`\n  : 'contactez-nous';\n\nfunction boutonEmail(c) {\n  return (\n    '<table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr>' +\n    `<td align=\"center\" bgcolor=\"${COULEUR}\" style=\"background:${COULEUR};border-radius:6px;mso-padding-alt:12px 6px;\">` +\n    `<a href=\"${e(c.lien)}\" style=\"display:block;padding:12px 6px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:20px;font-weight:bold;color:#ffffff;text-decoration:none;white-space:nowrap;border-radius:6px;\">${e(c.de)} – ${e(c.a)}</a>` +\n    '</td></tr></table>'\n  );\n}\n\n/** Boutons d'une journée : deux colonnes de même largeur (lisible sur téléphone comme dans Outlook). */\nfunction grilleEmail(creneaux) {\n  const lignes = [];\n  for (let i = 0; i < creneaux.length; i += 2) {\n    const droite = creneaux[i + 1] ? boutonEmail(creneaux[i + 1]) : '&nbsp;';\n    lignes.push(\n      `<tr><td width=\"50%\" style=\"padding:0 5px 10px 0;\">${boutonEmail(creneaux[i])}</td><td width=\"50%\" style=\"padding:0 0 10px 5px;\">${droite}</td></tr>`,\n    );\n  }\n  return `<table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" style=\"max-width:340px;\">${lignes.join('')}</table>`;\n}\n\nfunction email(d) {\n  const texte = 'margin:0 0 16px;';\n  const jours = d.jours\n    .map((jour) => `<p style=\"margin:22px 0 10px;font-size:17px;font-weight:bold;\">${e(majuscule(jour.titre))}</p>${grilleEmail(jour.creneaux)}`)\n    .join('');\n  const choix = d.jours.length\n    ? `<p style=\"${texte}\">${paragraphes(R.email_intro)}</p>${jours}\n       <p style=\"margin:18px 0 0;\">Aucun de ces créneaux ne vous convient ? <a href=\"${e(d.lien_creneaux)}\" style=\"color:${COULEUR};\">Voir les créneaux suivants</a>, répondez à cet e-mail ou ${appelEmail}.</p>`\n    : `<p style=\"${texte}\">Nous avons bien reçu votre demande et nous vous en remercions.</p>\n       <p style=\"${texte}\">Tous nos créneaux de rappel des prochains jours sont déjà pris : nous vous rappelons dès que possible. Vous pouvez aussi répondre à cet e-mail ou ${appelEmail.replace('appelez-nous', 'nous appeler')}.</p>`;\n  const signature = [ENTREPRISE, e(R.adresse_entreprise), TELEPHONE].filter(Boolean).join('<br>');\n\n  return `<!doctype html>\n<html lang=\"fr\">\n<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>${e(R.email_objet)}</title></head>\n<body style=\"margin:0;padding:0;background:#f5f5f4;\">\n<table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" bgcolor=\"#f5f5f4\" style=\"background:#f5f5f4;\">\n<tr><td align=\"center\" style=\"padding:24px 12px;\">\n<table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" style=\"max-width:560px;background:#ffffff;border-radius:10px;\">\n<tr><td style=\"padding:28px 24px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:24px;color:#1c1917;text-align:left;\">\n<p style=\"${texte}\">Bonjour,</p>\n${choix}\n<p style=\"margin:28px 0 0;padding-top:16px;border-top:1px solid #e7e5e4;font-size:14px;line-height:21px;color:#57534e;\">${signature}</p>\n</td></tr>\n</table>\n</td></tr>\n</table>\n</body>\n</html>`;\n}\n\n// ---------------------------------------------------------------- Pages affichées au prospect\n\nconst STYLE = `\n*{box-sizing:border-box}\nbody{margin:0;background:#f5f5f4;color:#1c1917;font-family:system-ui,-apple-system,\"Segoe UI\",Roboto,Arial,sans-serif;font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}\nmain{max-width:30rem;margin:0 auto;padding:1.25rem 1rem 3rem}\n.marque{margin:0 0 1rem;font-size:1.125rem;font-weight:800;letter-spacing:.02em;color:${COULEUR}}\n.carte{background:#fff;border-radius:14px;padding:1.5rem 1.25rem;box-shadow:0 1px 2px rgba(28,25,23,.06),0 12px 28px -16px rgba(28,25,23,.3)}\nh1{margin:0 0 .75rem;font-size:1.5rem;line-height:1.2}\nh2{margin:1.5rem 0 .6rem;font-size:1.0625rem}\np{margin:0 0 1rem}\na{color:${COULEUR}}\na[href^=\"tel:\"]{white-space:nowrap}\n.resume{margin:0 0 .35rem;padding:.85rem 1rem;border-radius:10px;background:#f5f5f4}\n.resume strong{display:block;font-size:1.125rem}\n.autre{margin:0 0 1.5rem;font-size:.9375rem}\n.alerte{margin:0 0 1.25rem;padding:.75rem 1rem;border-left:4px solid ${COULEUR};border-radius:6px;background:#fdf3f2;font-weight:600}\nlabel.champ,legend{display:block;margin:0 0 .5rem;padding:0;font-weight:700}\nfieldset{margin:1.5rem 0 0;padding:0;border:0;min-width:0}\ninput[type=tel]{width:100%;min-height:3rem;padding:.6rem .8rem;border:2px solid #d6d3d1;border-radius:10px;font:inherit;color:inherit;background:#fff}\ninput[type=tel]:focus-visible{outline:3px solid #1c1917;outline-offset:2px;border-color:#1c1917}\n.choix{display:grid;gap:.5rem}\n.choix.courts{grid-template-columns:repeat(3,1fr)}\n.choix label{position:relative;display:block}\n.choix input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}\n.choix span{display:flex;align-items:center;justify-content:center;min-height:3rem;padding:.5rem .75rem;border:2px solid #d6d3d1;border-radius:10px;background:#fff;font-weight:600;text-align:center}\n.choix input:checked+span{border-color:${COULEUR};background:${COULEUR};color:#fff}\n.choix input:focus-visible+span{outline:3px solid #1c1917;outline-offset:2px}\n.bouton,button{display:flex;align-items:center;justify-content:center;width:100%;min-height:3.25rem;padding:.75rem 1rem;border:0;border-radius:10px;background:${COULEUR};color:#fff;font:inherit;font-weight:700;text-align:center;text-decoration:none;cursor:pointer}\nbutton{margin-top:1.75rem;font-size:1.0625rem}\n.bouton:focus-visible,button:focus-visible{outline:3px solid #1c1917;outline-offset:2px}\n.creneaux{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}\n.creneaux .bouton{padding:.75rem .25rem;white-space:nowrap}\n.pied{margin:1.25rem 0 0;font-size:.9375rem;text-align:center;color:#57534e}\n`;\n\n/** Page complète. `pied` : rappel du numéro sous la carte, pour les pages qui ne le citent pas déjà. */\nfunction gabarit(titre, contenu, pied = false) {\n  return `<!doctype html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"robots\" content=\"noindex, nofollow\">\n<title>${e(titre)} – ${ENTREPRISE}</title>\n<style>${STYLE}</style>\n</head>\n<body>\n<main>\n<p class=\"marque\">${ENTREPRISE}</p>\n<div class=\"carte\">\n${contenu}\n</div>\n${pied && TELEPHONE ? `<p class=\"pied\">Une question ? <a href=\"${APPEL}\">${TELEPHONE}</a></p>` : ''}\n</main>\n</body>\n</html>`;\n}\n\nconst quand = (r) => `${e(r.jour)}, entre ${e(r.de)} et ${e(r.a)}`;\n\nfunction listeCreneaux(jours) {\n  if (!jours.length) {\n    return `<p>Aucun créneau de rappel n'est disponible pour le moment. Répondez à notre e-mail ou ${appelezNous} : nous conviendrons d'un horaire ensemble.</p>`;\n  }\n  return jours\n    .map(\n      (jour) =>\n        `<h2>${e(majuscule(jour.titre))}</h2><div class=\"creneaux\">${jour.creneaux\n          .map((c) => `<a class=\"bouton\" href=\"${e(c.lien)}\">${e(c.de)} – ${e(c.a)}</a>`)\n          .join('')}</div>`,\n    )\n    .join('');\n}\n\nfunction pageCreneaux(d) {\n  const avis = {\n    pris: 'Ce créneau vient d’être réservé. Merci d’en choisir un autre.',\n    indisponible: 'Ce créneau n’est plus disponible. Merci d’en choisir un autre.',\n  }[d.avis];\n  return gabarit(\n    'Choisissez votre créneau',\n    `<h1>Choisissez votre créneau de rappel</h1>\n${avis ? `<p class=\"alerte\" role=\"alert\">${avis}</p>` : '<p>Nous vous rappelons à l’horaire de votre choix.</p>'}\n${listeCreneaux(d.jours)}`,\n    d.jours.length > 0,\n  );\n}\n\nfunction pageQuestions(d) {\n  const erreurs = d.erreurs ?? [];\n  const alertes = [\n    erreurs.includes('telephone') ? 'Merci d’indiquer le numéro auquel vous rappeler.' : '',\n    erreurs.includes('questions') ? 'Merci de choisir une réponse à chaque question.' : '',\n  ].filter(Boolean);\n\n  const blocs = d.questions\n    .map((q, rang) => {\n      const courts = q.reponses.every((r) => r.length <= 12) && q.reponses.length <= 3;\n      const options = q.reponses\n        .map(\n          (reponse, i) =>\n            `<label><input type=\"radio\" name=\"${e(q.id)}\" value=\"${i}\"${d.saisie.reponses[rang] === i ? ' checked' : ''}${\n              d.obligatoires ? ' required' : ''\n            }><span>${e(reponse)}</span></label>`,\n        )\n        .join('');\n      return `<fieldset><legend>${e(q.titre)}</legend><div class=\"choix${courts ? ' courts' : ''}\">${options}</div></fieldset>`;\n    })\n    .join('\\n');\n\n  return gabarit(\n    'Votre rappel',\n    `<h1>Votre rappel</h1>\n<p class=\"resume\"><strong>${e(majuscule(d.creneau.jour))}</strong>entre ${e(d.creneau.de)} et ${e(d.creneau.a)}</p>\n<p class=\"autre\"><a href=\"${e(d.lien_creneaux)}\">Choisir un autre créneau</a></p>\n${alertes.map((texte) => `<p class=\"alerte\" role=\"alert\">${texte}</p>`).join('')}\n<form method=\"post\" action=\"${e(d.lien_formulaire)}\">\n<input type=\"hidden\" name=\"ref\" value=\"${e(d.demande.ref)}\">\n<input type=\"hidden\" name=\"c\" value=\"${e(d.creneau.code)}\">\n<label class=\"champ\" for=\"tel\">Numéro auquel vous rappeler</label>\n<input id=\"tel\" name=\"tel\" type=\"tel\" inputmode=\"tel\" autocomplete=\"tel\" required maxlength=\"30\" value=\"${e(d.saisie.telephone)}\">\n${blocs}\n<button type=\"submit\">Confirmer mon rappel</button>\n</form>`,\n    true,\n  );\n}\n\nfunction pageConfirmation(d) {\n  return gabarit(\n    'Rappel confirmé',\n    `<h1>C’est noté !</h1>\n<p>Nous vous rappelons <strong>${quand(d.rappel)}</strong>, au <strong>${e(d.telephone)}</strong>.</p>\n<p>Un empêchement ? Répondez à notre e-mail ou ${appelezNous}.</p>`,\n  );\n}\n\nfunction pageMessage(d) {\n  const messages = {\n    deja_reserve: [\n      'Votre rappel est déjà enregistré',\n      `<p>Nous vous rappelons <strong>${d.rappel ? quand(d.rappel) : 'à l’horaire convenu'}</strong>.</p>\n<p>Pour changer d’horaire, répondez à notre e-mail ou ${appelezNous}.</p>`,\n    ],\n    erreur: [\n      'Un problème technique est survenu',\n      `<p>Votre rappel n’a pas pu être enregistré. Merci de réessayer dans quelques minutes, ou ${appelezNous}.</p>`,\n    ],\n    lien_invalide: [\n      'Ce lien n’est plus valable',\n      `<p>Pour convenir d’un rappel, répondez à notre e-mail ou ${appelezNous}.</p>`,\n    ],\n  };\n  const [titre, contenu] = messages[d.code] ?? messages.lien_invalide;\n  return gabarit(titre, `<h1>${titre}</h1>\\n${contenu}`);\n}\n\n// ---------------------------------------------------------------- Une sortie par élément reçu\n\nreturn $input.all().map((item) => {\n  const d = item.json ?? {};\n\n  if (d.action === 'envoyer') {\n    return { json: { ...d, email_objet: String(R.email_objet ?? '').trim() || 'Votre demande de rappel', email_html: email(d) } };\n  }\n  if (d.action === 'sans_email') return { json: d };\n  if (d.action === 'reserver') {\n    return { json: { ...d, page_confirmation: pageConfirmation(d), page_erreur: pageMessage({ code: 'erreur' }) } };\n  }\n  if (d.action === 'page') {\n    const ecrans = { questions: pageQuestions, creneaux: pageCreneaux, message: pageMessage };\n    return { json: { ...d, page_html: (ecrans[d.ecran] ?? pageMessage)(d) } };\n  }\n  if (d.action === 'erreur') return { json: { ...d, page_erreur: pageMessage({ code: 'erreur' }) } };\n\n  // Élément sans décision : il vient de « Mail ou clic ? » (lien incomplet) ou de l'échec de\n  // « Retrouver la demande ». Demande introuvable = lien périmé ; toute autre erreur = panne Gmail.\n  const introuvable = d.error === undefined || /not found|not be found|invalid (?:\\w+ )?id/i.test(String(d.error));\n  if (!introuvable) return { json: { action: 'erreur', detail: String(d.error), page_erreur: pageMessage({ code: 'erreur' }) } };\n  return { json: { action: 'page', ecran: 'message', code: 'lien_invalide', page_html: pageMessage({ code: 'lien_invalide' }) } };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        220
+      ],
+      "id": "2177daa0-c867-4e0e-aef6-a9b42f5aac05",
+      "name": "Mise en page"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a8edf7db-0043-4f64-a217-4c9b0ed86d91",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "envoyer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "E-mail à envoyer"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "366b8300-d6ae-4c7e-abbb-bcce171b82a9",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "sans_email",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Pas d’adresse"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d9ce6258-6f96-47cd-ad82-a69561e4ad26",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "page",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Page à afficher"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "876d41f5-7745-48f1-aefa-fa9206514e58",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "reserver",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rappel à enregistrer"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "59c02a76-317b-4ac1-a6a9-426523b552ac",
+                    "leftValue": "={{ $json.action }}",
+                    "rightValue": "erreur",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Panne"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1940,
+        220
+      ],
+      "id": "6c294170-73b9-40f1-af9c-c840adc1cd72",
+      "name": "Que faire ?"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send",
+        "sendTo": "={{ $json.demande.email }}",
+        "subject": "={{ $json.email_objet }}",
+        "emailType": "html",
+        "message": "={{ $json.email_html }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "={{ $('Réglages').first().json.entreprise }}",
+          "replyTo": "={{ $('Réglages').first().json.email_reponse }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2220,
+        -140
+      ],
+      "id": "312780db-b509-4b99-ae3e-44c78fdb2505",
+      "name": "Envoyer les créneaux"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2220,
+        20
+      ],
+      "id": "91bc6f53-f1b1-4e31-ae8a-30ca008b7116",
+      "name": "Pas d’adresse e-mail"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.page_html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2220,
+        180
+      ],
+      "id": "b570f92c-2e82-4eff-a96e-5d038862e1eb",
+      "name": "Afficher la page"
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": "primary",
+          "cachedResultName": "Agenda principal du compte connecté"
+        },
+        "start": "={{ $json.debut }}",
+        "end": "={{ $json.fin }}",
+        "additionalFields": {
+          "summary": "={{ $json.titre }}",
+          "description": "={{ $json.description }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        2220,
+        350
+      ],
+      "id": "0945f4a4-842a-4e5f-aa76-42646d510c64",
+      "name": "Ajouter à l’agenda",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $('Mise en page').first().json.page_confirmation }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2460,
+        280
+      ],
+      "id": "f29588ab-e649-4519-a2c5-fe694b24424b",
+      "name": "Page : rappel confirmé"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $('Mise en page').first().json.page_erreur }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2460,
+        640
+      ],
+      "id": "d6a6ea01-37aa-4087-aa42-b7097ef023f2",
+      "name": "Page : problème technique"
+    },
+    {
+      "parameters": {
+        "errorType": "errorMessage",
+        "errorMessage": "={{ 'Rappel non enregistré, compte Google à vérifier (Gmail ou Agenda) : ' + ($json.error ?? $json.detail ?? 'erreur inconnue') }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        2700,
+        640
+      ],
+      "id": "ffed2ac6-605c-4c69-a6fe-c8e4d96c0f52",
+      "name": "Signaler la panne"
+    },
+    {
+      "parameters": {
+        "content": "## Rappel des prospects du site\n\n**1.** Une demande du site arrive dans Gmail (mail de c.project@orange.fr) : le prospect reçoit un e-mail avec un bouton par créneau de rappel libre sur les prochaines 48 heures ouvrées.\n\n**2.** Il clique sur un créneau : une page lui rappelle l’horaire et lui pose les questions.\n\n**3.** Il valide : le rappel est ajouté à l’agenda Google.\n\nUn créneau n’est plus proposé dès que l’agenda contient déjà quelque chose à cet horaire (autre rappel, rendez-vous, congé noté « occupé »).\n\nHoraires, jours, questions et textes se modifient dans **Réglages**, sans toucher au reste.",
+        "height": 300,
+        "width": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -500
+      ],
+      "id": "76356b34-56fb-4ea3-a52a-eff69d13fab1",
+      "name": "Note : mode d’emploi"
+    },
+    {
+      "parameters": {
+        "content": "## À faire avant de publier\n\n1. **Compte Gmail d’envoi** : le choisir dans « Nouveau mail du site », « Retrouver la demande » et « Envoyer les créneaux » (le même compte dans les trois).\n2. **Agenda de Brian** : connecter son compte Google dans « Agenda : créneaux occupés » et « Ajouter à l’agenda ».\n3. **Boîte Orange** : règle qui redirige vers ce Gmail les mails dont l’expéditeur est c.project@orange.fr (les demandes du site).\n4. Relire **Réglages**, puis publier le workflow : les liens de l’e-mail ne fonctionnent qu’une fois le workflow publié.",
+        "height": 300,
+        "width": 660,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -500
+      ],
+      "id": "3de34d84-648e-49c7-ac27-dc7d2dde04aa",
+      "name": "Note : à faire"
+    },
+    {
+      "parameters": {
+        "content": "### Ce que voit le prospect\n\nLes pages sont servies par n8n, à l’adresse `lien_rappel` des Réglages.\n\nSi l’agenda ne répond pas (compte Google déconnecté), le prospect est invité à téléphoner et l’exécution apparaît en erreur.",
+        "height": 200,
+        "width": 560,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2140,
+        -500
+      ],
+      "id": "ab1b4866-9f93-466e-a0ef-3a30df3555fe",
+      "name": "Note : sorties"
+    }
+  ],
+  "connections": {
+    "Clic sur un créneau": {
+      "main": [
+        [
+          {
+            "node": "Réglages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation du rappel": {
+      "main": [
+        [
+          {
+            "node": "Réglages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Réglages": {
+      "main": [
+        [
+          {
+            "node": "Mail ou clic ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail ou clic ?": {
+      "main": [
+        [
+          {
+            "node": "Lire la demande",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Retrouver la demande",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mise en page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrouver la demande": {
+      "main": [
+        [
+          {
+            "node": "Lire la demande",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mise en page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire la demande": {
+      "main": [
+        [
+          {
+            "node": "Agenda : créneaux occupés",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agenda : créneaux occupés": {
+      "main": [
+        [
+          {
+            "node": "Créneaux et décision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Créneaux et décision": {
+      "main": [
+        [
+          {
+            "node": "Mise en page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mise en page": {
+      "main": [
+        [
+          {
+            "node": "Que faire ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Que faire ?": {
+      "main": [
+        [
+          {
+            "node": "Envoyer les créneaux",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pas d’adresse e-mail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Afficher la page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ajouter à l’agenda",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Page : problème technique",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajouter à l’agenda": {
+      "main": [
+        [
+          {
+            "node": "Page : rappel confirmé",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Page : problème technique",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page : problème technique": {
+      "main": [
+        [
+          {
+            "node": "Signaler la panne",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nouveau mail du site": {
+      "main": [
+        [
+          {
+            "node": "Réglages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Paris"
+  },
+  "active": false
+}

@@ -1,0 +1,74 @@
+---
+/**
+ * Bloc « Nos coordonnées », présent en bas de chaque page comme sur le site d'origine.
+ * Avec `map`, la carte Google Maps est proposée à côté (page d'accueil, infos légales).
+ */
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import MapFacade from './MapFacade.astro';
+
+interface Props {
+  map?: boolean;
+}
+
+const { map = false } = Astro.props;
+const itemClass = 'flex items-start gap-4';
+const iconClass = 'flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600 shadow-card';
+const labelClass = 'block text-sm font-semibold tracking-wide text-stone-600 uppercase';
+---
+
+<section class="border-t border-stone-200 bg-stone-100" aria-labelledby="coordonnees-titre">
+  <div class:list={['container-page py-14 lg:py-20', map && 'grid items-center gap-10 lg:grid-cols-12']}>
+    <div class:list={[map ? 'lg:col-span-5' : 'flex flex-wrap items-center justify-between gap-x-12 gap-y-8']}>
+      <div>
+        <p class="eyebrow text-brand-700">Où nous trouver</p>
+        <h2 id="coordonnees-titre" class="title-section mt-3">Nos coordonnées</h2>
+      </div>
+
+      <ul class:list={[map ? 'mt-8 space-y-5' : 'flex flex-wrap gap-x-10 gap-y-5']}>
+        <li class={itemClass}>
+          <span class={iconClass}><Icon name="map-pin" /></span>
+          <span>
+            <span class={labelClass}>Adresse</span>
+            <span class="block text-lg leading-snug font-medium text-stone-900">
+              {site.address.street}<br />{site.address.postalCode} {site.address.city}
+            </span>
+          </span>
+        </li>
+        <li class={itemClass}>
+          <span class={iconClass}><Icon name="phone" /></span>
+          <span>
+            <span class={labelClass}>Téléphone</span>
+            <a href={site.phoneHref} class="block text-lg font-medium whitespace-nowrap text-stone-900 hover:text-brand-700">
+              {site.phone}
+            </a>
+          </span>
+        </li>
+        <li class={itemClass}>
+          <span class={iconClass}><Icon name="mail" /></span>
+          <span>
+            <span class={labelClass}>Email</span>
+            <a href={`mailto:${site.email}`} class="block text-lg font-medium break-all text-stone-900 hover:text-brand-700">
+              {site.email}
+            </a>
+          </span>
+        </li>
+      </ul>
+
+      {
+        map && (
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="/contact/#formulaire" data-open-contact class="btn btn-primary">
+              <Icon name="message" /> Nous contacter
+            </a>
+            <a href={site.mapLinkUrl} target="_blank" rel="noopener" class="btn btn-outline">
+              <Icon name="external" /> Itinéraire
+            </a>
+          </div>
+        )
+      }
+    </div>
+
+    {map && <MapFacade class="aspect-[4/3] sm:aspect-[16/10] lg:col-span-7" />}
+  </div>
+</section>

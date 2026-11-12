@@ -1,0 +1,98 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { albums } from '../data/realisations';
+import { site } from '../data/site';
+
+// Pour chaque photo : une vignette carrée dans la grille, la grande version dans la visionneuse.
+const galleries = await Promise.all(
+  albums.map(async (album) => ({
+    ...album,
+    items: await Promise.all(
+      album.photos.map(async (src, i) => ({
+        src,
+        alt: `${album.title} – réalisation CPROJECT’ ${i + 1}`,
+        large: await getImage({ src, width: Math.min(src.width, 1800) }),
+      })),
+    ),
+  })),
+);
+---
+
+<Layout title="Nos réalisations : plâtrerie, isolation, flocage en Lorraine | CPROJECT’">
+  <PageHeader label="Nos réalisations" title="CPROJECT’ : nos réalisations">
+    <ul class="mt-8 flex flex-wrap gap-2.5">
+      {
+        galleries.map((album) => (
+          <li>
+            <a
+              href={`#${album.id}`}
+              class="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/5 py-2 pr-2 pl-4 font-display text-lg font-semibold tracking-wide uppercase transition hover:border-white/60 hover:bg-white/10"
+            >
+              <span class="h-2 w-5 -skew-x-[20deg]" style={`background:${album.accent}`} />
+              {album.title}
+              <span class="rounded-full bg-white/15 px-2.5 py-0.5 text-base">{album.items.length}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </PageHeader>
+
+  {
+    galleries.map((album, index) => (
+      <section
+        id={album.id}
+        class:list={['scroll-mt-24 py-14 lg:py-20', index % 2 === 1 && 'border-y border-stone-200 bg-stone-100']}
+        aria-labelledby={`${album.id}-titre`}
+      >
+        <div class="container-page">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <h2 id={`${album.id}-titre`} class="title-section flex items-center gap-4">
+              <span class="h-3 w-9 shrink-0 -skew-x-[20deg]" style={`background:${album.accent}`} aria-hidden="true" />
+              {album.title}
+            </h2>
+            <p class="font-display text-lg font-semibold tracking-[0.18em] text-stone-600 uppercase">
+              {album.items.length} photos
+            </p>
+          </div>
+
+          <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-4">
+            {album.items.map((item, i) => (
+              <li class:list={[i === 0 && 'col-span-2 row-span-2']}>
+                <a
+                  href={item.large.src}
+                  data-lightbox={album.id}
+                  data-alt={item.alt}
+                  data-caption={album.title}
+                  class="group relative block aspect-square overflow-hidden rounded-2xl bg-stone-200"
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    widths={i === 0 ? [480, 720, 960, 1280] : [240, 360, 480, 640]}
+                    sizes={
+                      i === 0
+                        ? '(min-width: 1024px) 620px, (min-width: 640px) 66vw, 100vw'
+                        : '(min-width: 1024px) 300px, (min-width: 640px) 33vw, 50vw'
+                    }
+                    class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+                  />
+                  <span class="absolute inset-0 bg-stone-950/0 transition duration-300 group-hover:bg-stone-950/25" />
+                  <span class="absolute right-3 bottom-3 flex size-10 items-center justify-center rounded-full bg-white/90 text-stone-900 opacity-0 shadow-card transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                    <Icon name="zoom" />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+
+  <CtaBand items={[...site.reassurance, site.reassuranceZone]} />
+</Layout>
