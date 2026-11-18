@@ -5,7 +5,7 @@
  */
 import { Image } from 'astro:assets';
 import { lien } from '../data/liens';
-import { qcmQuestions } from '../data/qcm';
+import { qcmNombreQuestions } from '../data/qcm';
 import { partenaires, type PartenaireId } from '../data/photos';
 import Icon from './Icon.astro';
 
@@ -63,7 +63,7 @@ const { items, certifications = [], presetTravaux } = Astro.props;
     <div class="lg:col-span-5">
       <div class="rounded-3xl bg-white p-7 text-stone-800 shadow-lift sm:p-9">
         <p class="font-display text-3xl leading-none font-bold tracking-tight text-stone-950 sm:text-4xl">
-          Votre projet en {qcmQuestions.length} questions
+          Votre projet en {qcmNombreQuestions} questions
         </p>
         <p class="mt-3 text-stone-600">
           Répondez à un court questionnaire, laissez vos coordonnées : nous vous rappelons sur le créneau de votre choix.

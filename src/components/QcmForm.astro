@@ -1,11 +1,14 @@
 ---
 import { lien } from '../data/liens';
 /**
- * Formulaire de contact sous forme de QCM : une question par écran (réponses A, B, C…),
- * puis les coordonnées. Les questions se modifient dans src/data/qcm.ts.
- * Le comportement (étapes, envoi) est dans src/scripts/contact.ts.
+ * Formulaire de contact sous forme de QCM : une question par écran (réponses A, B, C…), le choix
+ * du créneau d'appel, puis les coordonnées. Les questions se modifient dans src/data/qcm.ts,
+ * les créneaux dans src/data/creneaux.ts.
+ * Le comportement (étapes, envoi) est dans src/scripts/contact.ts, le choix du créneau dans
+ * src/scripts/creneaux.ts.
  */
-import { qcmLetters, qcmQuestions } from '../data/qcm';
+import { creneauxReglages, libelleHeure } from '../data/creneaux';
+import { qcmCreneau, qcmLetters, qcmNombreQuestions, qcmQuestions } from '../data/qcm';
 import { site } from '../data/site';
 import Icon from './Icon.astro';
 
@@ -16,7 +19,8 @@ interface Props {
 
 const { idPrefix } = Astro.props;
 const id = (name: string) => `${idPrefix}-${name}`;
-const stepCount = qcmQuestions.length + 1;
+// Une barre d'avancement par étape : les questions, le créneau, puis les coordonnées.
+const stepCount = qcmQuestions.length + 2;
 ---
 
 <form
@@ -33,7 +37,7 @@ const stepCount = qcmQuestions.length + 1;
     <div data-qcm-js class="mb-7">
       <div class="flex items-center justify-between gap-4">
         <p data-qcm-counter class="font-display text-base font-semibold tracking-[0.18em] text-brand-700 uppercase">
-          Question 1 sur {qcmQuestions.length}
+          Question 1 sur {qcmNombreQuestions}
         </p>
         <p class="text-sm text-stone-500">Moins d’une minute</p>
       </div>
@@ -93,6 +97,88 @@ const stepCount = qcmQuestions.length + 1;
         </fieldset>
       ))
     }
+
+    <!-- Créneau d'appel : les réponses sont les prochains créneaux libres (src/scripts/creneaux.ts) -->
+    <fieldset
+      data-qcm-step
+      data-qcm-question={qcmCreneau.id}
+      data-qcm-title={qcmCreneau.title}
+      data-creneaux
+      data-creneaux-service={site.creneauxUrl}
+      class="min-w-0"
+    >
+      <legend
+        data-qcm-heading
+        tabindex="-1"
+        class="mb-5 flex w-full items-center gap-3.5 font-display text-3xl leading-none font-bold text-stone-950 outline-none sm:text-4xl"
+      >
+        <span class="q-badge"><span>Q{qcmQuestions.length + 1}</span></span>
+        {qcmCreneau.title}
+      </legend>
+      <p class="-mt-2 mb-4 text-stone-600">{qcmCreneau.help}</p>
+
+      <!-- Avec JavaScript : les jours et les heures encore libres, remplis par src/scripts/creneaux.ts -->
+      <div data-qcm-js>
+        <p id={id('creneau-jour')} class="field-label">Jour</p>
+        <div
+          data-creneaux-jours
+          role="group"
+          aria-labelledby={id('creneau-jour')}
+          class="creneaux-jours mt-1.5"
+        >
+        </div>
+
+        <p id={id('creneau-heure')} class="field-label mt-5">Heure</p>
+        <div
+          data-creneaux-liste
+          role="radiogroup"
+          aria-labelledby={id('creneau-heure')}
+          class="creneaux-grille mt-1.5"
+        >
+        </div>
+
+        <p data-creneaux-aucun class="mt-4 text-stone-600">
+          Aucun créneau n’est disponible pour le moment. Appelez-nous au
+          <a href={site.phoneHref} class="font-semibold text-brand-700 underline underline-offset-2">{site.phone}</a> :
+          nous trouverons un moment ensemble.
+        </p>
+        <p data-creneaux-etat class="mt-3 min-h-6 text-sm font-medium text-brand-700" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- Sans JavaScript : jour à saisir et heure à cocher, transmis dans l'e-mail.
+           Pas d'utilitaire d'affichage (grid, flex…) sur ce bloc : il serait prioritaire sur la
+           règle qui le masque quand le JavaScript a pris la main (calque utilities de Tailwind). -->
+      <div data-qcm-nojs class="space-y-4">
+        <div>
+          <label for={id('creneau-date')} class="field-label">Jour souhaité (du lundi au vendredi)</label>
+          <input id={id('creneau-date')} name="creneau_date" type="date" required class="field-input" />
+        </div>
+        <div>
+          <p id={id('creneau-heure-nojs')} class="field-label">Heure souhaitée</p>
+          <div
+            role="radiogroup"
+            aria-labelledby={id('creneau-heure-nojs')}
+            class="creneaux-grille mt-1.5"
+          >
+            {
+              creneauxReglages.heures.map((horaire) => (
+                <label class="creneau">
+                  <input
+                    type="radio"
+                    name="rappel"
+                    value={`À ${libelleHeure(horaire)}`}
+                    data-label={`À ${libelleHeure(horaire)}`}
+                    required
+                    class="peer sr-only"
+                  />
+                  <span class="creneau-heure">{libelleHeure(horaire)}</span>
+                </label>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </fieldset>
 
     <!-- Coordonnées -->
     <fieldset data-qcm-step data-qcm-contact class="min-w-0">
@@ -194,7 +280,9 @@ const stepCount = qcmQuestions.length + 1;
     <h3 data-qcm-success-title tabindex="-1" class="mt-5 text-4xl font-bold text-stone-950 outline-none">
       Le formulaire a été envoyé !
     </h3>
-    <p class="mx-auto mt-3 max-w-md text-lg text-stone-600">Nous vous recontacterons dans les meilleurs délais.</p>
+    <p class="mx-auto mt-3 max-w-md text-lg text-stone-600">
+      <span data-qcm-success-creneau>Nous vous recontacterons dans les meilleurs délais.</span>
+    </p>
     <button type="button" data-qcm-restart class="btn btn-outline btn-sm mt-7">Faire une nouvelle demande</button>
   </div>
 

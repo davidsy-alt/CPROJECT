@@ -305,8 +305,84 @@
     animation: qcm-in 0.34s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
+  /* Sans JavaScript, le choix du créneau se fait avec un champ date et six cases à cocher. */
+  .qcm[data-enhanced] [data-qcm-nojs] {
+    display: none;
+  }
+
+  /* Choix du créneau d'appel : barre des jours (défilement horizontal) puis grille des heures. */
+  .creneaux-jours {
+    @apply -mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-2;
+    scrollbar-width: thin;
+  }
+
+  .creneau-jour {
+    @apply flex min-w-20 shrink-0 cursor-pointer snap-start flex-col items-center gap-0.5 rounded-xl border-2 border-stone-200 bg-white px-3 py-2 transition duration-150;
+    @apply hover:border-stone-400 focus-visible:ring-4 focus-visible:ring-brand-200 focus-visible:outline-none;
+  }
+
+  .creneau-jour[aria-pressed='true'] {
+    @apply border-stone-950 bg-stone-950 text-white;
+  }
+
+  .creneau-jour:disabled {
+    @apply cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400 hover:border-stone-200;
+  }
+
+  .creneau-jour-nom {
+    @apply font-display text-base leading-none font-bold tracking-wide uppercase;
+  }
+
+  .creneau-jour-date {
+    @apply text-xs leading-tight text-stone-500;
+  }
+
+  .creneau-jour[aria-pressed='true'] .creneau-jour-date {
+    @apply text-stone-300;
+  }
+
+  .creneaux-grille {
+    @apply grid grid-cols-2 gap-2.5 sm:grid-cols-3;
+  }
+
+  .creneau {
+    @apply relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-stone-200 bg-white px-3 py-3 text-center transition duration-150;
+    @apply hover:border-stone-400 has-checked:border-brand-600 has-checked:bg-brand-50 has-focus-visible:ring-4 has-focus-visible:ring-brand-200;
+  }
+
+  .creneau-heure {
+    @apply font-display text-xl leading-none font-bold text-stone-950;
+  }
+
+  /* Créneau déjà pris : grisé, barré, non cliquable. */
+  .creneau[data-pris] {
+    @apply cursor-not-allowed border-stone-200 bg-stone-100 hover:border-stone-200;
+  }
+
+  .creneau[data-pris] .creneau-heure {
+    @apply text-stone-400 line-through;
+  }
+
+  .creneau-pris {
+    @apply mt-1 text-xs font-semibold tracking-wide text-stone-400 uppercase;
+  }
+
+  /* Message « aucun créneau disponible » : affiché seulement quand c'est le cas. */
+  [data-creneaux]:not([data-creneaux-vide='true']) [data-creneaux-aucun] {
+    display: none;
+  }
+
+  [data-creneaux][data-creneaux-vide='true'] [data-creneaux-jours],
+  [data-creneaux][data-creneaux-vide='true'] [data-creneaux-liste] {
+    display: none;
+  }
+
   .qcm-chip {
     @apply inline-flex cursor-pointer items-center gap-2 rounded-full border border-stone-200 bg-stone-50 py-1 pr-3 pl-1 text-sm font-medium text-stone-800 transition hover:border-stone-400;
+  }
+
+  .qcm-chip-sans-lettre {
+    @apply pl-3;
   }
 
   .qcm-chip-letter {

@@ -14,6 +14,9 @@
  * 3 questions ») : cliquer sur une réponse ouvre le formulaire à la question suivante.
  * La question `travaux` est pré-cochée quand on vient d'une page prestation (voir `qcmTravaux`
  * dans src/data/services.ts).
+ *
+ * La dernière question du formulaire — le choix du créneau d'appel — n'est pas dans cette liste :
+ * ses réponses sont les créneaux libres du moment (`qcmCreneau` plus bas, src/data/creneaux.ts).
  */
 export interface QcmOption {
   label: string;
@@ -46,18 +49,21 @@ export const qcmQuestions: QcmQuestion[] = [
       { label: 'Plus tard', detail: 'Projet en préparation' },
     ],
   },
-  {
-    // Créneaux de rappel : fin de matinée et fin de journée, en semaine.
-    id: 'rappel',
-    title: 'Quand préférez-vous être rappelé ?',
-    help: 'Du lundi au vendredi.',
-    options: [
-      { label: 'En fin de matinée', detail: 'Entre 11 h 30 et 12 h' },
-      { label: 'En fin de journée', detail: 'Entre 17 h 30 et 18 h' },
-      { label: 'Indifférent', detail: 'Sur l’un ou l’autre créneau' },
-    ],
-  },
 ];
+
+/**
+ * Dernière question du formulaire : le créneau d'appel. Ses réponses ne sont pas une liste fixe —
+ * ce sont les prochains créneaux libres, calculés à l'ouverture du formulaire (horaires, jours et
+ * disponibilités : voir src/data/creneaux.ts).
+ */
+export const qcmCreneau = {
+  id: 'rappel',
+  title: 'Quand souhaitez-vous être appelé ?',
+  help: 'Appel de 15 minutes, du lundi au vendredi. Les créneaux déjà pris sont grisés.',
+};
+
+/** Nombre de questions posées au visiteur : le QCM, plus le choix du créneau. */
+export const qcmNombreQuestions = qcmQuestions.length + 1;
 
 /** Lettres affichées devant les réponses. */
 export const qcmLetters = 'ABCDEFGHIJ';

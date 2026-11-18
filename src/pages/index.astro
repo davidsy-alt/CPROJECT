@@ -7,7 +7,7 @@ import Icon, { type IconName } from '../components/Icon.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import carte from '../assets/carte-grand-est.png';
 import { partenaires, photo } from '../data/photos';
-import { qcmLetters, qcmQuestions } from '../data/qcm';
+import { qcmLetters, qcmNombreQuestions, qcmQuestions } from '../data/qcm';
 import { services } from '../data/services';
 import { departements, site } from '../data/site';
 
@@ -100,7 +100,7 @@ const [firstQuestion] = qcmQuestions;
           <div class="lg:col-span-4">
             <p class="eyebrow text-brand-700">Contact</p>
             <h2 id="lanceur-titre" class="mt-3 text-4xl leading-none font-bold tracking-tight text-stone-950 sm:text-5xl">
-              Votre projet en {qcmQuestions.length} questions
+              Votre projet en {qcmNombreQuestions} questions
             </h2>
             <p class="mt-3 text-stone-600">
               Cochez vos réponses, laissez vos coordonnées : nous vous rappelons sur le créneau de votre choix.

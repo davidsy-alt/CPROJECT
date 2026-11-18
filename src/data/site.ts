@@ -32,10 +32,16 @@ export const site = {
   reassuranceZone: 'Interventions sur tout le Grand Est',
 
   /**
-   * Adresse qui reçoit les demandes du formulaire (POST JSON).
+   * Adresse qui reçoit les demandes du formulaire (POST JSON) et crée le rendez-vous.
    * Vide = pas encore branché : le formulaire ouvre un e-mail pré-rempli vers `email`.
    */
   contactWebhookUrl: (import.meta.env.PUBLIC_CONTACT_WEBHOOK_URL as string | undefined) ?? '',
+
+  /**
+   * Adresse qui indique les créneaux d'appel déjà pris (GET JSON), pour les griser dans le
+   * formulaire. Vide = tous les créneaux sont proposés (voir src/data/creneaux.ts).
+   */
+  creneauxUrl: (import.meta.env.PUBLIC_CRENEAUX_URL as string | undefined) ?? '',
 };
 
 /** Départements d'intervention (liste du site d'origine). */

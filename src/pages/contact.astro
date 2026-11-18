@@ -3,13 +3,23 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import PageHeader from '../components/PageHeader.astro';
 import QcmForm from '../components/QcmForm.astro';
-import { qcmQuestions } from '../data/qcm';
+import { creneauxReglages, libelleHeure } from '../data/creneaux';
+import { qcmNombreQuestions, qcmQuestions } from '../data/qcm';
 import { site } from '../data/site';
+
+// Les six créneaux proposés chaque jour, repris du réglage : « 11 h 30, 11 h 45, 12 h… ».
+const heures = creneauxReglages.heures.map(libelleHeure).join(', ');
 
 const etapes = [
   { title: `Répondez à ${qcmQuestions.length} questions`, text: 'Votre besoin, votre délai : il suffit de cocher.' },
-  { title: 'Choisissez votre créneau de rappel', text: 'En fin de matinée ou en fin de journée, du lundi au vendredi.' },
-  { title: 'Nous vous rappelons', text: 'Pour étudier votre projet et préparer votre devis, rapide et gratuit.' },
+  {
+    title: 'Choisissez votre créneau d’appel',
+    text: `${heures} — du lundi au vendredi. Les créneaux déjà pris sont grisés.`,
+  },
+  {
+    title: `Nous vous appelons (${creneauxReglages.duree} min)`,
+    text: 'Pour étudier votre projet et préparer votre devis, rapide et gratuit.',
+  },
 ];
 ---
 
@@ -28,7 +38,7 @@ const etapes = [
           <p class="eyebrow text-brand-700">Devis gratuit</p>
           <h2 class="mt-2 text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl">Parlons de votre projet</h2>
           <p class="mt-2 text-stone-600">
-            {qcmQuestions.length} questions, puis vos coordonnées : nous vous rappelons sur le créneau de votre choix.
+            {qcmNombreQuestions} questions, puis vos coordonnées : nous vous appelons sur le créneau que vous avez choisi.
           </p>
         </div>
         <div class="px-6 pt-7 pb-6 sm:px-9">
